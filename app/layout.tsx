@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
@@ -105,6 +106,7 @@ export default function RootLayout({
         >
           {children}
           <Toaster position="top-right" richColors />
+          <WhatsAppButton />
         </ThemeProvider>
       </body>
     </html>
