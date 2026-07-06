@@ -14,17 +14,17 @@ type LogoProps = {
 };
 
 const BRAND_PATH = {
-  full: "/brand/logo.svg",
-  mark: "/brand/logo-mark.svg",
-  dark: "/brand/logo-dark.svg",
+  full: "/brand/logo.png",
+  mark: "/brand/logo-mark.png",
+  dark: "/brand/logo-dark.png",
 } as const;
 
 export function Logo({
   variant = "full",
   theme = "auto",
   className,
-  width = 120,
-  height = 32,
+  width = 140,
+  height = 60,
   priority = false,
 }: LogoProps) {
   if (variant === "wordmark") {
@@ -40,21 +40,21 @@ export function Logo({
     );
   }
 
-  const isDark = theme === "dark";
-  const isLight = theme === "light";
-  const useDarkVariant = theme === "dark" || theme === "auto";
-  const src = useDarkVariant ? BRAND_PATH.dark : BRAND_PATH.full;
-
   if (variant === "mark") {
     return (
-      <Mark
-        className={cn("h-8 w-8", className)}
+      <Image
+        src={BRAND_PATH.mark}
+        alt="Charlo"
         width={width}
         height={height}
         priority={priority}
+        className={cn("h-8 w-8 object-contain", className)}
       />
     );
   }
+
+  const useDark = theme === "dark";
+  const src = useDark ? BRAND_PATH.dark : BRAND_PATH.full;
 
   return (
     <Image
@@ -63,35 +63,7 @@ export function Logo({
       width={width}
       height={height}
       priority={priority}
-      className={cn(
-        isDark && "invert-0",
-        isLight && "dark:invert-0",
-        theme === "auto" && "dark:invert",
-        className,
-      )}
-    />
-  );
-}
-
-function Mark({
-  className,
-  width,
-  height,
-  priority,
-}: {
-  className?: string;
-  width: number;
-  height: number;
-  priority?: boolean;
-}) {
-  return (
-    <Image
-      src={BRAND_PATH.mark}
-      alt="Charlo"
-      width={width}
-      height={height}
-      priority={priority}
-      className={cn(className)}
+      className={cn("h-8 w-auto object-contain", className)}
     />
   );
 }
