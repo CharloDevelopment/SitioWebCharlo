@@ -38,23 +38,25 @@ El sitio es solo de marketing (no incluye la plataforma `/app` real). El idioma 
 
 Preparar todo lo necesario para empezar a programar.
 
-- [ ] Crear el repositorio en GitHub
-- [ ] Inicializar el proyecto con Next.js 15
-- [ ] Configurar TypeScript en modo estricto
-- [ ] Instalar Tailwind CSS
-- [ ] Instalar shadcn/ui
-- [ ] Configurar ESLint y Prettier
-- [ ] Instalar Husky y lint-staged
-- [ ] Configurar Conventional Commits
-- [ ] Definir las ramas: main, dev, feature, fix
-- [ ] Crear el proyecto en Vercel
-- [ ] Conectar el repo con Vercel
-- [ ] Crear el archivo .env.example con todas las variables
-- [ ] Crear el archivo .gitignore
-- [ ] Crear el archivo README con instrucciones básicas
-- [ ] Verificar que `pnpm dev` corra sin errores
-- [ ] Verificar que `pnpm build` pase sin errores
-- [ ] Hacer el primer deploy preview
+- [x] Crear el repositorio en GitHub
+- [x] Inicializar el proyecto con Next.js 15
+- [x] Configurar TypeScript en modo estricto
+- [x] Instalar Tailwind CSS
+- [x] Instalar shadcn/ui
+- [x] Configurar ESLint y Prettier
+- [x] Instalar Husky y lint-staged
+- [x] Configurar Conventional Commits
+- [x] Definir las ramas: main, dev, feature, fix
+- [x] Crear el proyecto en Vercel
+- [x] Conectar el repo con Vercel
+- [x] Crear el archivo .env.example con todas las variables
+- [x] Crear el archivo .gitignore
+- [x] Crear el archivo README con instrucciones básicas
+- [x] Verificar que `pnpm dev` corra sin errores
+- [x] Verificar que `pnpm build` pase sin errores
+- [x] Hacer el primer deploy preview
+
+**Estado:** Completado. Sitio en producción en https://charlo-web.vercel.app
 
 ---
 
