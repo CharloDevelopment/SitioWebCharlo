@@ -64,17 +64,19 @@ Preparar todo lo necesario para empezar a programar.
 
 Cargar la marca de Charlo en el proyecto.
 
-- [ ] Subir el logo y el manual a `/assets/brand/`
-- [ ] Crear el componente `<Logo />` con sus variantes
-- [ ] Definir la paleta de colores en CSS variables
-- [ ] Aprobar la paleta (o subir los hex exactos del manual)
-- [ ] Cargar la tipografía Geist vía next/font
-- [ ] Crear el favicon
-- [ ] Crear el apple-icon
-- [ ] Crear el manifest.json
-- [ ] Crear la imagen OpenGraph dinámica
-- [ ] Crear la imagen Twitter dinámica
+- [ ] Subir el logo y el manual a `/assets/brand/` _(pendiente: usuario sube cuando tenga el manual)_
+- [x] Crear el componente `<Logo />` con sus variantes
+- [x] Definir la paleta de colores en CSS variables
+- [ ] Aprobar la paleta (o subir los hex exactos del manual) _(pendiente: usuario aprueba la propuesta turquesa+azul cielo)_
+- [x] Cargar la tipografía Geist vía next/font
+- [x] Crear el favicon
+- [x] Crear el apple-icon
+- [x] Crear el manifest.json
+- [x] Crear la imagen OpenGraph dinámica
+- [x] Crear la imagen Twitter dinámica
 - [ ] Verificar que la imagen OG se vea bien al compartir en redes
+
+**Estado:** Placeholder de marca implementado. Pendiente: subir logo real y aprobar paleta.
 
 ---
 
