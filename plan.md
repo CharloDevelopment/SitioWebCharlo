@@ -64,10 +64,10 @@ Preparar todo lo necesario para empezar a programar.
 
 Cargar la marca de Charlo en el proyecto.
 
-- [ ] Subir el logo y el manual a `/assets/brand/` _(pendiente: usuario sube cuando tenga el manual)_
+- [x] Subir el logo y el manual a `/public/brand/`
 - [x] Crear el componente `<Logo />` con sus variantes
 - [x] Definir la paleta de colores en CSS variables
-- [ ] Aprobar la paleta (o subir los hex exactos del manual) _(pendiente: usuario aprueba la propuesta turquesa+azul cielo)_
+- [x] Aprobar la paleta (azul marino + azul oscuro extraídos del logo real)
 - [x] Cargar la tipografía Geist vía next/font
 - [x] Crear el favicon
 - [x] Crear el apple-icon
@@ -76,7 +76,13 @@ Cargar la marca de Charlo en el proyecto.
 - [x] Crear la imagen Twitter dinámica
 - [ ] Verificar que la imagen OG se vea bien al compartir en redes
 
-**Estado:** Placeholder de marca implementado. Pendiente: subir logo real y aprobar paleta.
+**Estado:** Completado. Logo real integrado. Paleta real aplicada (azul marino + azul oscuro).
+
+**Colores extraídos del logo oficial:**
+
+- Primary (azul marino): #0030F0
+- Accent (azul oscuro): #103050
+- Background: #FFFFFF / #0A0A0A (dark)
 
 ---
 
