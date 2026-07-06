@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { siteConfig } from "@/config/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,27 +18,26 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://charlo.mx"),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Charlo — La inteligencia artificial, hecha simple.",
-    template: "%s | Charlo",
+    default: `${siteConfig.name} — ${siteConfig.tagline}`,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    "Charlo automatiza tu atención, cobranza y agenda para que recuperes tiempo y hagas crecer tu negocio — sin procesos complicados.",
-  applicationName: "Charlo",
+  description: siteConfig.description,
+  applicationName: siteConfig.name,
   generator: "Next.js",
   keywords: [
     "inteligencia artificial",
     "automatización",
-    "Pymes",
+    "pymes",
     "atención al cliente",
     "cobranza",
     "agenda",
     "Charlo",
   ],
-  authors: [{ name: "Charlo" }],
-  creator: "Charlo",
-  publisher: "Charlo",
+  authors: [{ name: siteConfig.name }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
   formatDetection: {
     email: false,
     address: false,
@@ -46,16 +46,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_MX",
-    url: "https://charlo.mx",
-    siteName: "Charlo",
-    title: "Charlo — La inteligencia artificial, hecha simple.",
-    description:
-      "Plataforma de IA para PYMES. Automatiza atención, cobranza y agenda. Empieza en minutos, sin contratos.",
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    description: siteConfig.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Charlo — La inteligencia artificial, hecha simple.",
-    description: "Plataforma de IA para PYMES. Automatiza atención, cobranza y agenda.",
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    description: siteConfig.description,
   },
   robots: {
     index: true,
@@ -69,10 +68,13 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-icon",
+    icon: [{ url: "/icon", type: "image/png" }],
+    apple: [{ url: "/apple-icon", type: "image/png" }],
   },
   manifest: "/manifest.webmanifest",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export const viewport: Viewport = {
