@@ -1,0 +1,30 @@
+{
+  "brand": {
+    "name": "Charlo",
+    "tagline": "La inteligencia artificial, hecha simple."
+  },
+  "nav": {
+    "whatToAutomate": "¿Qué quieres automatizar?",
+    "platform": "Plataforma",
+    "pricing": "Precios",
+    "learn": "Aprende",
+    "about": "Nosotros",
+    "contact": "Contacto",
+    "login": "Iniciar sesión",
+    "requestDemo": "Solicitar demostración"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Para PYMES de 2 a 50 empleados",
+      "title": "La inteligencia artificial, hecha simple.",
+      "subtitle": "Charlo automatiza tu atención, cobranza y agenda para que recuperes tiempo y hagas crecer tu negocio — sin procesos complicados.",
+      "trust": "✔ Sin conocimientos técnicos. ✔ Implementación rápida. ✔ Diseñado para PYMES."
+    }
+  },
+  "common": {
+    "learnMore": "Conocer la plataforma",
+    "loading": "Preparando todo para ti...",
+    "success": "Listo. Tu automatización está funcionando.",
+    "error": "Algo salió mal. Intenta nuevamente."
+  }
+}
