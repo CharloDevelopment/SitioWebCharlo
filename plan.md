@@ -90,39 +90,52 @@ Cargar la marca de Charlo en el proyecto.
 
 Crear todos los componentes visuales que se van a reutilizar.
 
-- [ ] Instalar los componentes base de shadcn/ui
-- [ ] Botón (con variantes: primario, secundario, fantasma, con icono)
-- [ ] Input de texto
-- [ ] Textarea
-- [ ] Select
-- [ ] Checkbox y Radio
-- [ ] Card
-- [ ] Badge
-- [ ] Dialog (modal)
-- [ ] Dropdown menu
-- [ ] Tabs
-- [ ] Accordion (para FAQ)
-- [ ] Tooltip
-- [ ] Toast (notificaciones)
-- [ ] Sheet (menú lateral móvil)
-- [ ] Navigation menu
-- [ ] Avatar
-- [ ] Separator
-- [ ] Skeleton (para loading)
-- [ ] Switch (para modo claro/oscuro)
-- [ ] Slider
-- [ ] Form (wrapper con validación)
-- [ ] Label
-- [ ] Progress
-- [ ] ScrollArea
-- [ ] Section wrapper (envoltorio de sección)
-- [ ] Section heading (título + subtítulo estandarizado)
-- [ ] Container (ancho máximo)
-- [ ] Bento grid (grid moderno)
-- [ ] Marquee (logos animados)
-- [ ] CTA banner (bloque grande de llamado a la acción)
-- [ ] Verificar que todos se vean bien en modo claro
-- [ ] Verificar que todos se vean bien en modo oscuro
+- [x] Instalar los componentes base de shadcn/ui (26 instalados)
+- [x] Botón (con variantes: primario, secundario, fantasma, con icono)
+- [x] Input de texto
+- [x] Textarea
+- [x] Select
+- [x] Checkbox y Radio
+- [x] Card
+- [x] Badge
+- [x] Dialog (modal)
+- [x] Dropdown menu
+- [x] Tabs
+- [x] Accordion (para FAQ)
+- [x] Tooltip
+- [x] Toast (notificaciones vía Sonner)
+- [x] Sheet (menú lateral móvil)
+- [x] Navigation menu
+- [x] Avatar
+- [x] Separator
+- [x] Skeleton (para loading)
+- [x] Switch (para modo claro/oscuro)
+- [x] Slider
+- [x] Form (wrapper con validación)
+- [x] Label
+- [x] Progress
+- [x] ScrollArea
+- [x] Section wrapper (envoltorio de sección)
+- [x] Section heading (título + subtítulo estandarizado)
+- [x] Container (ancho máximo)
+- [x] Bento grid (grid moderno)
+- [x] Marquee (logos animados)
+- [x] CTA banner (bloque grande de llamado a la acción)
+- [x] Verificar que todos se vean bien en modo claro (vía /ui-kit)
+- [x] Verificar que todos se vean bien en modo oscuro (vía toggle en /ui-kit)
+
+**Estado:** Completado. Showcase en `/ui-kit` con todos los componentes.
+
+**Primitivas custom de Charlo (`components/shared/`):**
+
+- `container.tsx` — wrapper de ancho máximo responsive
+- `section-wrapper.tsx` — sección con padding vertical y tono
+- `section-heading.tsx` — eyebrow + título + subtítulo estandarizado
+- `bento-grid.tsx` + `bento-card.tsx` — grid moderno asimétrico
+- `marquee.tsx` — scroll horizontal infinito
+- `cta-banner.tsx` — bloque de CTA grande
+- `theme-toggle.tsx` — botón de modo claro/oscuro
+- `whatsapp-button.tsx` — botón flotante de WhatsApp
 
 ---
 
