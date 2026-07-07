@@ -53,7 +53,6 @@ import { Marquee } from "@/components/shared/marquee";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { SectionWrapper } from "@/components/shared/section-wrapper";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
-import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 
 export default function UiKitPage() {
   return (
@@ -520,13 +519,12 @@ export default function UiKitPage() {
             <Mail className="text-primary h-8 w-8" />
             <h3 className="text-xl font-semibold">Botón flotante de WhatsApp</h3>
             <p className="text-muted-foreground max-w-md text-sm">
-              Mira abajo a la derecha. Aparece en todas las páginas del sitio.
+              Aparece en la esquina inferior derecha de todas las páginas públicas del sitio (lo
+              puso el root layout).
             </p>
           </div>
         </Container>
       </SectionWrapper>
-
-      <WhatsAppButton />
     </>
   );
 }
