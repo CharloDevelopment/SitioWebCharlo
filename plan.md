@@ -532,18 +532,52 @@ Las páginas legales y el banner de cookies.
 
 Configurar todo lo necesario para que Google encuentre el sitio.
 
-- [ ] Crear sitemap.xml dinámico
-- [ ] Crear robots.txt
-- [ ] Definir canonical en cada página
-- [ ] Agregar OpenGraph en cada página
-- [ ] Agregar Twitter cards en cada página
-- [ ] Agregar JSON-LD de Organization en todas las páginas
-- [ ] Agregar JSON-LD de Product en las páginas de producto
-- [ ] Agregar JSON-LD de FAQPage donde haya FAQ
-- [ ] Agregar JSON-LD de BreadcrumbList automático
-- [ ] Agregar JSON-LD de SoftwareApplication en /precios
-- [ ] Verificar el sitemap con curl
-- [ ] Validar el schema en Google Rich Results
+- [x] Crear sitemap.xml dinámico
+- [x] Crear robots.txt
+- [x] Definir canonical en cada página
+- [x] Agregar OpenGraph en cada página
+- [x] Agregar Twitter cards en cada página
+- [x] Agregar JSON-LD de Organization en todas las páginas (via root layout)
+- [x] Agregar JSON-LD de Product en las páginas de producto
+- [x] Agregar JSON-LD de FAQPage donde haya FAQ (home)
+- [x] Agregar JSON-LD de BreadcrumbList automático (3 páginas legales)
+- [x] Agregar JSON-LD de SoftwareApplication en /precios
+- [x] Verificar el sitemap con curl
+- [ ] Validar el schema en Google Rich Results _(pendiente: validar en search.google.com cuando esté listo)_
+
+**Estado:** Completado. SEO global configurado y verificado.
+
+**Archivos nuevos:**
+
+- `app/sitemap.ts` — sitemap dinámico con 14 rutas, prioridades 0.3-1.0, changeFrequency (weekly/monthly/yearly)
+- `app/robots.ts` — permite /, disallow /api + /login + /olvide + /proximamente + /ui-kit. Permite AI bots (GPT, Claude, Perplexity, CCBot)
+- `lib/breadcrumb-jsonld.ts` — helper para BreadcrumbList JSON-LD
+
+**Layout (root):**
+
+- Organization JSON-LD con @id para cross-page reference
+- WebSite JSON-LD con publisher → Organization
+- Meta geo.region (MX) y geo.placename (México)
+- openGraph + Twitter cards globales (overrideables por página)
+
+**Páginas con JSON-LD específico:**
+
+- / (home): Organization + WebSite + FAQPage + SoftwareApplication
+- /atencion, /cobranza, /agenda: Product
+- /plataforma, /empresas: WebPage
+- /nosotros: AboutPage
+- /precios: SoftwareApplication (3 offers) + Product (AggregateOffer)
+- /privacidad, /terminos, /cookies: BreadcrumbList
+
+**Verificación curl (desplegado):**
+
+- `/sitemap.xml` — 14 URLs válidas con lastmod, changefreq, priority
+- `/robots.txt` — User-agent rules + Sitemap reference
+- /atencion, /cobranza, /agenda — Product schema con brand + offers
+- /precios — SoftwareApplication con 3 Offer (lowPrice 599, highPrice 5499)
+- /privacidad — BreadcrumbList (2 items: Inicio → Privacidad)
+- @id cross-page reference funciona (https://charlo.mx#organization)
+- Canonical URL en cada página
 
 ---
 
