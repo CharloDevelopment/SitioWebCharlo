@@ -193,24 +193,43 @@ Las partes que se ven en todas las páginas.
 
 La página principal. La más importante.
 
-- [ ] Crear la estructura de la página
-- [ ] Sección Hero con título, subtítulo y CTAs
-- [ ] Microcopy de confianza debajo de los CTAs del hero
-- [ ] Sección de Problemas
-- [ ] Sección de Plataforma y Soluciones (con 3 cards)
-- [ ] Sección de Beneficios (bento)
-- [ ] Sección de Cómo funciona (3 pasos)
-- [ ] Sección de Casos de uso (4 industrias)
-- [ ] Sección de Testimonios (carrusel)
-- [ ] Sección de FAQ (accordion)
-- [ ] Sección de CTA final
-- [ ] Agregar animaciones de entrada en cada sección
-- [ ] Agregar SEO: title, description, canonical
-- [ ] Agregar OpenGraph y Twitter cards
-- [ ] Agregar JSON-LD de tipo Organization
-- [ ] Agregar JSON-LD de tipo FAQPage
-- [ ] Verificar que el Lighthouse mobile sea mayor a 95
-- [ ] Verificar que el LCP sea menor a 1.5s
+- [x] Crear la estructura de la página
+- [x] Sección Hero con título, subtítulo y CTAs
+- [x] Microcopy de confianza debajo de los CTAs del hero
+- [x] Sección de Problemas
+- [x] Sección de Plataforma y Soluciones (con 3 cards)
+- [x] Sección de Beneficios (bento)
+- [x] Sección de Cómo funciona (3 pasos)
+- [x] Sección de Casos de uso (4 industrias)
+- [x] Sección de Testimonios (carrusel)
+- [x] Sección de FAQ (accordion)
+- [x] Sección de CTA final
+- [x] Agregar animaciones de entrada en cada sección
+- [x] Agregar SEO: title, description, canonical
+- [x] Agregar OpenGraph y Twitter cards
+- [x] Agregar JSON-LD de tipo Organization
+- [x] Agregar JSON-LD de tipo FAQPage
+- [x] Agregar JSON-LD de tipo SoftwareApplication (extra)
+- [ ] Verificar que el Lighthouse mobile sea mayor a 95 _(pendiente: ejecutar Lighthouse en deploy)_
+- [ ] Verificar que el LCP sea menor a 1.5s _(pendiente: ejecutar Lighthouse en deploy)_
+
+**Estado:** Completado. Las 9 secciones viven en `components/sections/home/`.
+
+**Secciones (en orden):**
+
+1. `hero-section.tsx` — eyebrow + H1 con highlight + sub + 2 CTAs + trust
+2. `problems-section.tsx` — 5 problemas con iconos en tono destructive
+3. `platform-solutions-section.tsx` — 3 cards linked a /atencion, /cobranza, /agenda
+4. `benefits-section.tsx` — bento de 6 cards con mixed spans
+5. `how-it-works-section.tsx` — 3 pasos con números 01/02/03 grandes
+6. `use-cases-section.tsx` — 4 industrias (Clínicas, Escuelas, Restaurantes, Despachos)
+7. `testimonials-section.tsx` — Embla carousel con 4 testimonios y dots
+8. `faq-section.tsx` — 8 preguntas en accordion (id=faq)
+9. `final-cta-section.tsx` — full-width primary con gradiente
+
+**Animaciones:** Framer Motion con `FadeInUp`, `StaggerContainer`, `StaggerItem`. Respeta `prefers-reduced-motion`.
+
+**SEO:** 3 JSON-LD (Organization + FAQPage + SoftwareApplication), generateMetadata con canonical.
 
 ---
 
