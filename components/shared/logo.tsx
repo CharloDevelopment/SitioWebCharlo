@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
-type LogoVariant = "full" | "mark" | "wordmark";
+type LogoVariant = "full" | "mark" | "wordmark" | "vertical";
 type LogoTheme = "auto" | "light" | "dark";
 
 type LogoProps = {
@@ -16,7 +16,8 @@ type LogoProps = {
 const BRAND_PATH = {
   full: "/brand/logo.png",
   mark: "/brand/logo-mark.png",
-  dark: "/brand/logo-dark.png",
+  markWhite: "/brand/logo-mark-white.png",
+  vertical: "/brand/logo-vertical.png",
 } as const;
 
 export function Logo({
@@ -35,16 +36,17 @@ export function Logo({
           className,
         )}
       >
-        Charlo
+        Charló
       </span>
     );
   }
 
   if (variant === "mark") {
+    const useWhiteMark = theme === "dark";
     return (
       <Image
-        src={BRAND_PATH.mark}
-        alt="Charlo"
+        src={useWhiteMark ? BRAND_PATH.markWhite : BRAND_PATH.mark}
+        alt="Charló"
         width={width}
         height={height}
         priority={priority}
@@ -53,13 +55,26 @@ export function Logo({
     );
   }
 
+  if (variant === "vertical") {
+    return (
+      <Image
+        src={BRAND_PATH.vertical}
+        alt="Charló"
+        width={width}
+        height={height}
+        priority={priority}
+        className={cn("h-10 w-auto object-contain", className)}
+      />
+    );
+  }
+
   const useDark = theme === "dark";
-  const src = useDark ? BRAND_PATH.dark : BRAND_PATH.full;
+  const src = useDark ? "/brand/logo-dark.png" : BRAND_PATH.full;
 
   return (
     <Image
       src={src}
-      alt="Charlo"
+      alt="Charló"
       width={width}
       height={height}
       priority={priority}

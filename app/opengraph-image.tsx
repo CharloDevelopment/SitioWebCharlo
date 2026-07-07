@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Charlo — La inteligencia artificial, hecha simple.";
+export const alt = "Charló — La inteligencia artificial, hecha simple.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -44,7 +44,7 @@ export default function OpengraphImage() {
         >
           C
         </div>
-        Charlo
+        Charló
       </div>
 
       <div
@@ -77,7 +77,7 @@ export default function OpengraphImage() {
             maxWidth: 820,
           }}
         >
-          Automatiza tu atención, cobranza y agenda. Para PYMES de 2 a 50 empleados.
+          Automatiza tu negocio. Atención, cobranza y agenda funcionando 24/7.
         </div>
       </div>
 

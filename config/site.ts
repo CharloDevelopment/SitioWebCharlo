@@ -1,8 +1,8 @@
 export const siteConfig = {
-  name: "Charlo",
+  name: "Charló",
   tagline: "La inteligencia artificial, hecha simple.",
   description:
-    "Plataforma de IA para PYMES. Automatiza atención, cobranza y agenda. Empieza en minutos, sin contratos.",
+    "Charló automatiza tu negocio. Atención, cobranza y agenda funcionando 24/7. Empieza en minutos, sin contratos.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://charlo.mx",
   locale: "es_MX",
   ogImage: "/og/og.png",

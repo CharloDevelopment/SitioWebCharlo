@@ -1,54 +1,58 @@
 import type { Metadata } from "next";
 import { HeroSection } from "@/components/sections/home/hero-section";
-import { ProblemsSection } from "@/components/sections/home/problems-section";
+import { ProblemSolutionSection } from "@/components/sections/home/problem-solution-section";
 import { PlatformSolutionsSection } from "@/components/sections/home/platform-solutions-section";
-import { BenefitsSection } from "@/components/sections/home/benefits-section";
 import { HowItWorksSection } from "@/components/sections/home/how-it-works-section";
-import { UseCasesSection } from "@/components/sections/home/use-cases-section";
-import { TestimonialsSection } from "@/components/sections/home/testimonials-section";
+import { LogoCarouselSection } from "@/components/sections/home/logo-carousel-section";
 import { FaqSection } from "@/components/sections/home/faq-section";
 import { FinalCtaSection } from "@/components/sections/home/final-cta-section";
+import { CustomCursor } from "@/components/motion/custom-cursor";
 import { siteConfig } from "@/config/site";
 
 const FAQS_SCHEMA = [
   {
-    question: "¿Necesito saber de tecnología?",
+    question: "¿Qué es exactamente Charló y qué hace por mi negocio?",
     answer:
-      "No. Charlo está hecho para empresarios, no para ingenieros. Nosotros configuramos todo por ti.",
+      "Charló es una plataforma que automatiza tres procesos clave de tu negocio: la atención al cliente, la cobranza y la agenda. En vez de contestar WhatsApp manualmente, perseguir pagos y confirmar citas una por una, Charló lo hace por ti, 24/7.",
   },
   {
-    question: "¿Cuánto tarda en implementarse?",
+    question: "¿Cuánto tarda en estar funcionando?",
     answer:
-      "Menos de un día. Después de la demostración, configuramos la plataforma y la adaptamos a tus procesos.",
+      "La implementación toma menos de 24 horas. Una vez que nos das tu información, nuestro equipo configura la plataforma y la conecta con tu WhatsApp.",
   },
   {
-    question: "¿Tengo que firmar contrato?",
+    question: "¿Tengo que firmar contrato o comprometerme?",
     answer:
-      "No. Puedes cancelar cuando quieras. Creemos que el valor se demuestra con el uso, no con cláusulas.",
+      "No. Charló se paga mes a mes. Si decides que no es para ti, cancelas y se acabó. Sin penalizaciones.",
   },
   {
-    question: "¿Funciona para mi tipo de negocio?",
+    question: "¿Y si el agente no sabe qué responder?",
     answer:
-      "Sí. Charlo se adapta a tu industria. Trabajamos con clínicas, restaurantes, escuelas, despachos, gimnasios y más.",
+      "Si Charló no entiende una pregunta, automáticamente escala la conversación a ti o a tu equipo con todo el historial.",
   },
   {
-    question: "¿Mis datos están seguros?",
+    question: "¿Funciona con mi WhatsApp actual?",
     answer:
-      "Sí. Usamos encriptación y servidores confiables. Tus datos y los de tus clientes están protegidos.",
+      "Sí. Charló se integra con tu número de WhatsApp Business. No necesitas cambiar de línea.",
+  },
+  {
+    question: "¿Cuánto cuesta y qué incluye?",
+    answer:
+      "Setup único de $499 MXN. Suscripción mensual desde $599 MXN. Sin contratos, sin costos ocultos.",
   },
 ];
 
 export const metadata: Metadata = {
   title: `${siteConfig.name} — ${siteConfig.tagline}`,
   description:
-    "Charlo automatiza tu atención, cobranza y agenda para PYMES de 2 a 50 empleados. Empieza en minutos, sin contratos, sin procesos complicados.",
+    "Charló automatiza tu negocio. Atención, cobranza y agenda funcionando 24/7. Empieza en minutos, sin contratos.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description:
-      "Plataforma de IA para PYMES. Automatiza atención, cobranza y agenda. Empieza en minutos, sin contratos.",
+      "Charló automatiza tu negocio. Atención, cobranza y agenda funcionando 24/7. Empieza en minutos, sin contratos.",
     url: siteConfig.url,
   },
 };
@@ -93,20 +97,11 @@ export default function HomePage() {
     name: siteConfig.name,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
+    description: siteConfig.description,
     offers: {
       "@type": "Offer",
       price: "599",
       priceCurrency: "MXN",
-      priceSpecification: {
-        "@type": "UnitPriceSpecification",
-        price: "599",
-        priceCurrency: "MXN",
-        referenceQuantity: {
-          "@type": "QuantitativeValue",
-          value: 1,
-          unitText: "MONTH",
-        },
-      },
     },
   };
 
@@ -127,13 +122,12 @@ export default function HomePage() {
         }}
       />
 
+      <CustomCursor />
       <HeroSection />
-      <ProblemsSection />
+      <ProblemSolutionSection />
       <PlatformSolutionsSection />
-      <BenefitsSection />
       <HowItWorksSection />
-      <UseCasesSection />
-      <TestimonialsSection />
+      <LogoCarouselSection />
       <FaqSection />
       <FinalCtaSection />
     </>

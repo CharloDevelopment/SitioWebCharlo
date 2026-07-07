@@ -30,11 +30,10 @@ export const metadata: Metadata = {
   keywords: [
     "inteligencia artificial",
     "automatización",
-    "pymes",
     "atención al cliente",
     "cobranza",
     "agenda",
-    "Charlo",
+    "Charló",
   ],
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,

@@ -1,58 +1,81 @@
 "use client";
 
 import { Container } from "@/components/shared/container";
-import { SectionHeading } from "@/components/shared/section-heading";
 import { SectionWrapper } from "@/components/shared/section-wrapper";
-import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion/fade-in-up";
+import { GlowCard } from "@/components/motion/glow-card";
+import { motion, useReducedMotion } from "framer-motion";
 
 const STEPS = [
   {
-    number: "01",
-    title: "Cuéntanos sobre tu empresa",
+    n: "01",
+    title: "Nos escribes",
     description:
-      "Agenda una demostración. Entendemos tus necesidades y encontramos la solución adecuada para tu negocio.",
+      "Por WhatsApp o desde el formulario. Cuéntanos qué haces hoy y qué quieres dejar de hacer.",
   },
   {
-    number: "02",
-    title: "Configuramos Charlo",
-    description: "Nosotros adaptamos la plataforma a tus procesos. Tú no haces nada técnico.",
+    n: "02",
+    title: "Configuramos Charló",
+    description:
+      "Nuestro equipo adapta la plataforma a tu negocio. Tú no tocas código ni configuración complicada.",
   },
   {
-    number: "03",
-    title: "Empieza a automatizar",
+    n: "03",
+    title: "Charló empieza a trabajar",
     description:
-      "Tu empresa comienza a ahorrar tiempo desde el primer día. Te acompañamos 14 días.",
+      "En 24 horas ya tienes a Charló atendiendo, cobrando y agendando. Te acompañamos 14 días.",
   },
 ];
 
 export function HowItWorksSection() {
+  const reduced = useReducedMotion();
+
   return (
     <SectionWrapper spacing="lg">
       <Container>
-        <FadeInUp>
-          <SectionHeading
-            eyebrow="Cómo funciona"
-            title="Empieza en tres pasos."
-            subtitle="Sin procesos complicados. Sin cursos. Sin consultores."
-            size="lg"
-            className="mb-16"
-          />
-        </FadeInUp>
+        <div className="mb-16 flex flex-col items-center text-center">
+          <motion.span
+            initial={{ opacity: 0, y: reduced ? 0 : 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: reduced ? 0 : 0.5 }}
+            className="border-border bg-muted/50 text-muted-foreground inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium tracking-wide uppercase"
+          >
+            Cómo funciona
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: reduced ? 0 : 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.1 }}
+            className="mt-6 max-w-3xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl md:text-5xl"
+          >
+            Empieza en tres pasos.
+          </motion.h2>
+        </div>
 
-        <StaggerContainer className="grid gap-6 md:grid-cols-3" staggerDelay={0.15}>
-          {STEPS.map((step) => (
-            <StaggerItem
-              key={step.number}
-              className="border-border bg-card relative flex flex-col gap-4 rounded-2xl border p-8"
+        <div className="grid gap-6 md:grid-cols-3">
+          {STEPS.map((step, i) => (
+            <motion.div
+              key={step.n}
+              initial={{ opacity: 0, y: reduced ? 0 : 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{
+                duration: reduced ? 0 : 0.7,
+                delay: reduced ? 0 : i * 0.1,
+                ease: [0.16, 1, 0.3, 1],
+              }}
             >
-              <div className="text-primary/30 text-5xl font-semibold tracking-tight">
-                {step.number}
-              </div>
-              <h3 className="text-xl font-semibold">{step.title}</h3>
-              <p className="text-muted-foreground text-sm">{step.description}</p>
-            </StaggerItem>
+              <GlowCard className="h-full p-6 sm:p-8">
+                <p className="text-primary/30 font-mono text-5xl font-semibold tracking-tight sm:text-6xl">
+                  {step.n}
+                </p>
+                <h3 className="mt-6 text-xl font-semibold tracking-tight">{step.title}</h3>
+                <p className="text-muted-foreground mt-2 text-sm">{step.description}</p>
+              </GlowCard>
+            </motion.div>
           ))}
-        </StaggerContainer>
+        </div>
       </Container>
     </SectionWrapper>
   );

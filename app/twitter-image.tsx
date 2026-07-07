@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Charlo — La inteligencia artificial, hecha simple.";
+export const alt = "Charló — La inteligencia artificial, hecha simple.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -14,7 +14,7 @@ export default function TwitterImage() {
         flexDirection: "column",
         justifyContent: "space-between",
         padding: 80,
-        background: "linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%)",
+        background: "linear-gradient(135deg, #0030F0 0%, #103050 50%, #0a0a0a 100%)",
         color: "white",
         fontFamily: "system-ui, sans-serif",
       }}
@@ -34,7 +34,7 @@ export default function TwitterImage() {
             height: 56,
             borderRadius: 14,
             background: "white",
-            color: "#06b6d4",
+            color: "#0030F0",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -44,7 +44,7 @@ export default function TwitterImage() {
         >
           C
         </div>
-        Charlo
+        Charló
       </div>
 
       <div
@@ -77,7 +77,7 @@ export default function TwitterImage() {
             maxWidth: 820,
           }}
         >
-          Automatiza tu atención, cobranza y agenda. Para PYMES.
+          Automatiza tu negocio. Atención, cobranza y agenda funcionando 24/7.
         </div>
       </div>
 
