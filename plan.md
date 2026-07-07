@@ -377,48 +377,70 @@ La página de precios con calculadora.
 
 ### `/aprende` (Academia)
 
-- [ ] Crear la estructura
-- [ ] Hero
-- [ ] Texto introductorio
-- [ ] Placeholder de guías
-- [ ] Placeholder de calculadora (link a /precios)
-- [ ] Placeholder de casos reales
-- [ ] Placeholder de videos
-- [ ] Placeholder de plantillas
-- [ ] CTA
-- [ ] SEO
+- [x] Crear la estructura
+- [x] Hero
+- [x] Texto introductorio
+- [x] Placeholder de guías
+- [x] Placeholder de calculadora (link a /precios)
+- [x] Placeholder de casos reales
+- [x] Placeholder de videos
+- [x] Placeholder de plantillas
+- [x] CTA
+- [x] SEO
 
 ### `/nosotros`
 
-- [ ] Crear la estructura
-- [ ] Hero con manifiesto
-- [ ] Texto de historia
-- [ ] Misión
-- [ ] Visión
-- [ ] Principios
-- [ ] Sección de equipo (fotos placeholder + nombres + roles)
-- [ ] CTA
-- [ ] SEO
+- [x] Crear la estructura
+- [x] Hero con manifiesto
+- [x] Texto de historia
+- [x] Misión
+- [x] Visión
+- [x] Principios (4)
+- [x] Sección de equipo (4 miembros con avatares de iniciales)
+- [x] CTA
+- [x] SEO + JSON-LD AboutPage
 
 ### `/contacto`
 
-- [ ] Crear la estructura
-- [ ] Hero
-- [ ] Formulario con campos: Nombre, Empresa, Correo, ¿Qué quieres automatizar?, Mensaje
-- [ ] Validación con Zod y React Hook Form
-- [ ] Conectar con Resend para mandar email a hola@charlo.mx
-- [ ] Mensaje de éxito
-- [ ] Mensaje de error
-- [ ] Links a WhatsApp, email y redes
-- [ ] SEO
+- [x] Crear la estructura
+- [x] Hero
+- [x] Formulario con campos: Nombre, Empresa, Correo, ¿Qué quieres automatizar?, Mensaje
+- [x] Validación con Zod
+- [x] Server action con Resend para hola@charlo.mx
+- [x] Mensaje de éxito (Alert verde)
+- [x] Mensaje de error (Alert rojo)
+- [x] Links a WhatsApp, email y redes
+- [x] SEO
 
 ### `/changelog`
 
-- [ ] Crear la estructura
-- [ ] Timeline de releases
-- [ ] Definir el formato (versión, fecha, título, descripción)
-- [ ] Escribir las primeras 3 entradas reales
-- [ ] SEO
+- [x] Crear la estructura
+- [x] Timeline de releases
+- [x] Formato definido: versión + fecha + título + descripción + cambios categorizados
+- [x] 3 entradas reales (v0.4.0, v0.3.0, v0.2.0)
+- [x] SEO
+
+**Estado:** Completado. 4 páginas secundarias publicadas.
+
+**Páginas creadas:**
+
+- `/aprende` — 6 cards (guías, calculadora con link, casos, videos, plantillas, academia). 5 marcadas "Próximamente"
+- `/nosotros` — Story + Misión + Visión + 4 Principios + Equipo (4 personas) + CTA
+- `/contacto` — Form con server action Resend. Si `RESEND_API_KEY` no está configurado, hace fallback a success sin enviar (para desarrollo). Cuando se configure, envía a `hola@charlo.mx`
+- `/changelog` — 3 releases reales del proyecto (v0.4.0 sitio público, v0.3.0 sistema de diseño, v0.2.0 branding)
+
+**Componentes nuevos:**
+
+- `components/ui/alert.tsx` — shadcn Alert (success/error)
+- `app/(marketing)/contacto/actions.ts` — server action con Resend + Zod
+- `app/(marketing)/contacto/contact-form.tsx` — form con useActionState
+
+**Importante sobre Resend:**
+
+- `RESEND_API_KEY` está vacío en `.env.local` por ahora
+- El código cae en fallback gracioso: muestra success sin enviar email
+- Cuando se agregue el key en Vercel, los envíos funcionan automáticamente
+- Para configurar: Vercel dashboard → Settings → Environment Variables → agregar `RESEND_API_KEY`
 
 ---
 
