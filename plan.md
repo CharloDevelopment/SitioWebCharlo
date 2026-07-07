@@ -330,20 +330,46 @@ Las páginas de cada producto con su demo interactiva.
 
 La página de precios con calculadora.
 
-- [ ] Crear la estructura
-- [ ] Manifiesto: "Empieza pequeño. Crece cuando quieras."
-- [ ] Mostrar el setup fee de $499 MXN
-- [ ] Card del Plan Inicial ($599 sin IA, $759 con IA)
-- [ ] Card del Plan Crecimiento ($1,499)
-- [ ] Card del Plan Empresa (desde $5,499)
-- [ ] Marcar el Plan Crecimiento como "Más popular"
-- [ ] Crear la tabla comparativa de features
-- [ ] Crear la calculadora de ahorro funcional
-- [ ] Inputs: clientes por día, horas por semana, costo por hora
-- [ ] Output: ahorro mensual estimado en MXN y horas
-- [ ] FAQ de precios
-- [ ] CTA final
-- [ ] SEO y JSON-LD de tipo Product y SoftwareApplication
+- [x] Crear la estructura
+- [x] Manifiesto: "Empieza pequeño. Crece cuando quieras."
+- [x] Mostrar el setup fee de $499 MXN
+- [x] Card del Plan Inicial ($599/mes)
+- [x] Card del Plan Crecimiento ($1,499/mes)
+- [x] Card del Plan Empresa (desde $5,499/mes)
+- [x] Marcar el Plan Crecimiento como "Más popular"
+- [x] Crear la tabla comparativa de features
+- [x] Crear la calculadora de ahorro funcional
+- [x] Inputs: clientes por día, horas por semana, costo por hora
+- [x] Output: ahorro mensual estimado en MXN y horas
+- [x] FAQ de precios
+- [x] CTA final
+- [x] SEO y JSON-LD de tipo Product y SoftwareApplication
+
+**Estado:** Completado. /precios con planes, comparador y calculadora funcional.
+
+**Pricing visual:**
+
+- Setup $499 MXN (único) destacado arriba
+- 3 cards en grid: Inicial $599, Crecimiento $1,499 (highlighted), Empresa desde $5,499
+- Crecimiento con scale-105, border-primary, badge "Más popular"
+
+**Calculadora (`savings-calculator.tsx`):**
+
+- 60% tasa de automatización (conservadora)
+- Calcula horas recuperadas/mes = horas/semana × 4 × 0.6
+- Calcula dinero ahorrado/mes = horas × costo/hora
+- Muestra ROI por plan (dinero/costo)
+- Marca plan recomendado: ≤8h Inicial, ≤25h Crecimiento, >25h Empresa
+- Botón CTA: abre demo modal
+
+**Comparador (`pricing-comparator.tsx`):**
+
+- Tabla con 17 features
+- Headers sticky con badges
+- Plan Crecimiento con columna highlighted
+- Resalta rows importantes con bg-muted
+
+**SEO:** generateMetadata + JSON-LD (SoftwareApplication con 3 offers, Product con AggregateOffer)
 
 ---
 
