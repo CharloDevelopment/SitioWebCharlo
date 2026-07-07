@@ -76,6 +76,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  other: {
+    "geo.region": "MX",
+    "geo.placename": "México",
+  },
 };
 
 export const viewport: Viewport = {
@@ -93,8 +97,59 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${siteConfig.url}#organization`,
+    name: siteConfig.name,
+    url: siteConfig.url,
+    logo: {
+      "@type": "ImageObject",
+      url: `${siteConfig.url}/brand/logo.png`,
+      width: 1914,
+      height: 822,
+    },
+    image: `${siteConfig.url}/brand/logo.png`,
+    description: siteConfig.description,
+    email: siteConfig.email,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      email: siteConfig.email,
+      availableLanguage: ["Spanish", "es-MX"],
+    },
+    sameAs: [
+      siteConfig.social.twitter,
+      siteConfig.social.linkedin,
+      siteConfig.social.instagram,
+    ].filter(Boolean),
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteConfig.url}#website`,
+    url: siteConfig.url,
+    name: siteConfig.name,
+    description: siteConfig.description,
+    inLanguage: "es-MX",
+    publisher: { "@id": `${siteConfig.url}#organization` },
+  };
+
   return (
     <html lang="es" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema),
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground min-h-screen antialiased`}
       >
