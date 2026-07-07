@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown, Menu } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
-import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -37,7 +36,6 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <ThemeToggle />
           <Button variant="ghost" size="sm" asChild>
             <Link href="/login">Iniciar sesión</Link>
           </Button>
@@ -47,7 +45,6 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
-          <ThemeToggle />
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" aria-label="Abrir menú de navegación">

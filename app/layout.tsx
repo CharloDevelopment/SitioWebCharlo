@@ -148,14 +148,20 @@ export default function RootLayout({
             __html: JSON.stringify(websiteSchema),
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{localStorage.removeItem('charlo-theme');document.documentElement.classList.remove('dark');document.documentElement.style.colorScheme='light';}catch(e){}})();`,
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground min-h-screen antialiased`}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
+          forcedTheme="light"
+          enableSystem={false}
           disableTransitionOnChange
         >
           {children}
