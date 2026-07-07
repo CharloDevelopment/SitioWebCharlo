@@ -239,68 +239,90 @@ Las páginas de cada producto con su demo interactiva.
 
 ### `/plataforma` (overview del ecosistema)
 
-- [ ] Crear la estructura
-- [ ] Hero con título y subtítulo
-- [ ] Sección: Qué es Charlo Platform
-- [ ] Sección: Dashboard
-- [ ] Sección: Centro de Control
-- [ ] Sección: Usuarios
-- [ ] Sección: IA
-- [ ] Sección: Escalabilidad
-- [ ] Sección: Seguridad
-- [ ] Sección: Integraciones
-- [ ] CTA final
-- [ ] SEO y JSON-LD
+- [x] Crear la estructura
+- [x] Hero con título y subtítulo
+- [x] Sección: Qué es Charlo Platform (incluida en el hero)
+- [x] Sección: Dashboard
+- [x] Sección: Centro de Control
+- [x] Sección: Usuarios
+- [x] Sección: IA
+- [x] Sección: Escalabilidad
+- [x] Sección: Seguridad
+- [x] Sección: Integraciones
+- [x] CTA final
+- [x] SEO y JSON-LD
 
 ### `/atencion` (Charlo Atención)
 
-- [ ] Crear la estructura
-- [ ] Hero
-- [ ] Problema específico
-- [ ] Cómo funciona
-- [ ] Demo interactiva del agente (mockup navegable)
-- [ ] Características
-- [ ] Beneficios
-- [ ] Casos
-- [ ] FAQ
-- [ ] CTA
-- [ ] SEO y JSON-LD
+- [x] Crear la estructura
+- [x] Hero
+- [x] Problema específico
+- [x] Cómo funciona (integrado en demo + features)
+- [x] Demo interactiva del agente (mockup navegable)
+- [x] Características
+- [x] Beneficios
+- [x] Casos
+- [x] FAQ
+- [x] CTA
+- [x] SEO y JSON-LD
 
 ### `/cobranza` (Charlo Cobranza)
 
-- [ ] Crear la estructura
-- [ ] Hero
-- [ ] Problema específico
-- [ ] Cómo funciona
-- [ ] Demo interactiva del flujo de cobros
-- [ ] Características
-- [ ] Beneficios
-- [ ] Casos
-- [ ] FAQ
-- [ ] CTA
-- [ ] SEO y JSON-LD
+- [x] Crear la estructura
+- [x] Hero
+- [x] Problema específico
+- [x] Cómo funciona (integrado en demo + features)
+- [x] Demo interactiva del flujo de cobros
+- [x] Características
+- [x] Beneficios
+- [x] Casos
+- [x] FAQ
+- [x] CTA
+- [x] SEO y JSON-LD
 
 ### `/agenda` (Charlo Agenda)
 
-- [ ] Crear la estructura
-- [ ] Hero
-- [ ] Problema específico
-- [ ] Cómo funciona
-- [ ] Demo interactiva de la agenda
-- [ ] Características
-- [ ] Beneficios
-- [ ] Casos
-- [ ] FAQ
-- [ ] CTA
-- [ ] SEO y JSON-LD
+- [x] Crear la estructura
+- [x] Hero
+- [x] Problema específico
+- [x] Cómo funciona (integrado en demo + features)
+- [x] Demo interactiva de la agenda
+- [x] Características
+- [x] Beneficios
+- [x] Casos
+- [x] FAQ
+- [x] CTA
+- [x] SEO y JSON-LD
 
 ### `/empresas` (industrias genérico)
 
-- [ ] Crear la estructura
-- [ ] Hero
-- [ ] Grid de 4 industrias con copy
-- [ ] CTA a demo
-- [ ] SEO
+- [x] Crear la estructura
+- [x] Hero
+- [x] Grid de 10 industrias con copy (ampliado de 4)
+- [x] CTA a demo
+- [x] SEO
+
+**Estado:** Completado. 5 páginas de producto publicadas con 3 demos interactivas.
+
+**Páginas creadas:**
+
+- `/plataforma` — 8 secciones bento (Layers, Dashboard, Centro de Control, Usuarios, IA, Escalabilidad, Seguridad, Integraciones)
+- `/atencion` — con chat interactivo (responde con pre-canned answers, typing indicator, quick replies)
+- `/cobranza` — con lista de pagos interactiva (filtros, recordatorios, marcar pagado)
+- `/agenda` — con calendario semanal interactivo (click slot vacío = agregar cita, colores por servicio)
+- `/empresas` — grid de 10 industrias (Clínicas, Restaurantes, Escuelas, Despachos, Gimnasios, Tiendas, Estéticas, Constructoras, Hoteles, Salud)
+
+**Mockups interactivos (`components/product/mockups/`):**
+
+- `atencion-mockup.tsx` — WhatsApp-style chat con quick replies + typing indicator + auto-scroll
+- `cobranza-mockup.tsx` — Payment list con filtros + acciones + toasts
+- `agenda-mockup.tsx` — Calendar grid con click-to-add + week navigation
+
+**Componentes reutilizables (`components/sections/product/`):**
+
+- `product-hero`, `product-problem`, `product-demo`, `product-features`, `product-benefits`, `product-cases`, `product-faq`, `product-cta`
+
+**SEO:** 5 páginas con generateMetadata + JSON-LD (3× Product, 2× WebPage)
 
 ---
 
