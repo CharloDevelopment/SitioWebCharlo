@@ -143,24 +143,49 @@ Crear todos los componentes visuales que se van a reutilizar.
 
 Las partes que se ven en todas las páginas.
 
-- [ ] Crear el Navbar con el mega menú
-- [ ] Crear el menú móvil (Sheet)
-- [ ] Crear el Footer con 4 columnas
-- [ ] Crear el Theme Toggle (botón modo claro/oscuro)
-- [ ] Crear el botón flotante de WhatsApp
-- [ ] Crear el modal global de "Solicitar demostración"
-- [ ] Crear el formulario mini dentro del modal
-- [ ] Conectar el modal con WhatsApp pre-llenado
-- [ ] Crear el cookie banner
-- [ ] Activar Lenis para scroll suave
-- [ ] Crear las animaciones de transición entre páginas
-- [ ] Crear el scroll progress indicator
-- [ ] Crear el skip link (para accesibilidad)
-- [ ] Crear el breadcrumb
-- [ ] Verificar que la navegación funcione en desktop
-- [ ] Verificar que la navegación funcione en móvil
-- [ ] Verificar que la navegación funcione con teclado
-- [ ] Verificar que respete prefers-reduced-motion
+- [x] Crear el Navbar con el mega menú
+- [x] Crear el menú móvil (Sheet)
+- [x] Crear el Footer con 4 columnas
+- [x] Crear el Theme Toggle (botón modo claro/oscuro)
+- [x] Crear el botón flotante de WhatsApp
+- [x] Crear el modal global de "Solicitar demostración"
+- [x] Crear el formulario mini dentro del modal
+- [x] Conectar el modal con WhatsApp pre-llenado
+- [x] Crear el cookie banner
+- [x] Activar Lenis para scroll suave
+- [ ] Crear las animaciones de transición entre páginas _(pendiente: se hará cuando haya más páginas)_
+- [x] Crear el scroll progress indicator
+- [x] Crear el skip link (para accesibilidad)
+- [x] Crear el breadcrumb
+- [x] Verificar que la navegación funcione en desktop
+- [x] Verificar que la navegación funcione en móvil
+- [x] Verificar que la navegación funcione con teclado
+- [x] Verificar que respete prefers-reduced-motion (Lenis respeta automáticamente)
+
+**Estado:** Layout global completo. Falta solo el page transition (no prioritario hasta tener más páginas).
+
+**Componentes creados (`components/layout/`):**
+
+- `navbar.tsx` — sticky con backdrop blur, mega menu, theme toggle, login + demo CTAs
+- `footer.tsx` — 4 columnas + social icons + copyright
+- `skip-link.tsx` — salta al contenido principal
+- `scroll-progress.tsx` — barra superior con Framer Motion
+- `cookie-banner.tsx` — banner inferior con localStorage
+- `breadcrumb.tsx` — reusable con icono home + chevrons
+
+**Componentes creados (`components/forms/`):**
+
+- `demo-modal.tsx` — provider global con context API
+- `demo-form.tsx` — React Hook Form + Zod + WhatsApp redirect
+
+**Componentes creados (`components/motion/`):**
+
+- `lenis-provider.tsx` — smooth scroll con respeto a prefers-reduced-motion
+
+**Estructura de rutas:**
+
+- `app/(marketing)/` — grupo con layout completo (navbar + footer + modal + cookies)
+- `app/ui-kit/` — sin marketing chrome (dev only)
 
 ---
 
