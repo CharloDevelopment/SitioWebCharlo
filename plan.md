@@ -489,14 +489,42 @@ Las páginas de login (sin funcionar de verdad, solo UI).
 
 Las páginas legales y el banner de cookies.
 
-- [ ] Crear `/privacidad`
-- [ ] Crear `/terminos`
-- [ ] Crear `/cookies`
-- [ ] Crear el cookie banner funcional
-- [ ] El banner debe permitir aceptar o rechazar
-- [ ] La elección debe persistir
-- [ ] Link a la página de cookies desde el banner
-- [ ] Links a las 3 páginas desde el footer
+- [x] Crear `/privacidad`
+- [x] Crear `/terminos`
+- [x] Crear `/cookies`
+- [x] Crear el cookie banner funcional
+- [x] El banner debe permitir aceptar o rechazar
+- [x] La elección debe persistir
+- [x] Link a la página de cookies desde el banner
+- [x] Links a las 3 páginas desde el footer
+
+**Estado:** Completado. 3 páginas legales + cookie banner funcional.
+
+**Páginas creadas:**
+
+- `/privacidad` — Aviso de Privacidad (12 secciones) con cumplimiento LFPDPPP. Cubre derechos ARCO, transferencias, opt-out, INAI
+- `/terminos` — Términos y Condiciones (14 secciones). Cubre setup, suscripción, cancelaciones, propiedad intelectual, SLA, jurisdicción CDMX
+- `/cookies` — Aviso de Cookies (8 secciones). Detalla cookies necesarias, GA4, Clarity, opt-out, consecuencias de rechazar
+
+**Cookie banner (creado en FASE 3):**
+
+- Aparece 1s después del primer load
+- Aceptar / Rechazar con localStorage persist (`charlo-cookie-consent`)
+- Link a /cookies desde el texto
+- X para cerrar (= rechazar)
+- Botón close position bottom-right + 4 offset (no choca con WhatsApp)
+
+**Footer:**
+
+- 3 links legales via `footerNav.legal` en `config/nav.ts`
+- Columna "Legal" con Privacidad, Términos, Cookies
+
+**Setup adicional:**
+
+- Instalado `@tailwindcss/typography` plugin
+- `@plugin "@tailwindcss/typography"` en `globals.css`
+- Clase `prose` para tipografía consistente en páginas legales
+- Breadcrumb en cada página (Home > Privacidad)
 
 ---
 
