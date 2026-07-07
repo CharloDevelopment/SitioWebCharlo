@@ -448,18 +448,40 @@ La página de precios con calculadora.
 
 Las páginas de login (sin funcionar de verdad, solo UI).
 
-- [ ] Crear `/login` estilo Stripe
-- [ ] Input de email
-- [ ] Input de password
-- [ ] Botón "Iniciar sesión"
-- [ ] Link "¿Olvidaste tu contraseña?" → `/olvide`
-- [ ] Link "Crear cuenta" deshabilitado
-- [ ] Microcopy: "Bienvenido de nuevo. Accede a tu plataforma Charlo."
-- [ ] Crear `/olvide` con link directo a WhatsApp
-- [ ] Crear `/proximamente` post-submit
-- [ ] Mensaje: "Estamos en beta privada. Te avisaremos cuando tu acceso esté listo."
-- [ ] Botón para volver al inicio
-- [ ] SEO
+- [x] Crear `/login` estilo Stripe
+- [x] Input de email (con icono Mail)
+- [x] Input de password (con icono Lock + toggle show/hide)
+- [x] Botón "Iniciar sesión" (loading state, redirige a /proximamente)
+- [x] Link "¿Olvidaste tu contraseña?" → `/olvide`
+- [x] Link "Crear cuenta" deshabilitado (con "Próximamente · Beta privada")
+- [x] Microcopy: "Bienvenido de nuevo. Accede a tu plataforma Charlo."
+- [x] Crear `/olvide` con link directo a WhatsApp
+- [x] Crear `/proximamente` post-submit
+- [x] Mensaje: "Estamos en beta privada. Te avisaremos cuando tu acceso esté listo."
+- [x] Botón para volver al inicio
+- [x] SEO (noindex para todas las auth pages)
+
+**Estado:** Completado. Flujo de auth simulado sin backend.
+
+**Estructura `app/(auth)/`:**
+
+- `layout.tsx` — minimal layout (logo + back to home, sin navbar/footer)
+- `login/` — Stripe-style form
+- `olvide/` — WhatsApp recovery
+- `proximamente/` — post-submit page
+
+**Flujo UX:**
+
+1. Usuario entra a `/login`
+2. Completa email + password (cualquier valor)
+3. Click "Iniciar sesión" → loading 800ms → redirige a `/proximamente`
+4. En `/proximamente` ve mensaje de beta privada y vuelve al inicio
+
+**Rutas para probar:**
+
+- https://charlo-web.vercel.app/login
+- https://charlo-web.vercel.app/olvide
+- https://charlo-web.vercel.app/proximamente
 
 ---
 
