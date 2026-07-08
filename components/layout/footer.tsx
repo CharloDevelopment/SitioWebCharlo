@@ -8,19 +8,19 @@ export function Footer() {
   return (
     <footer className="border-border bg-muted/30 border-t">
       <Container>
-        <div className="grid gap-12 py-16 lg:grid-cols-[1.5fr_2.5fr]">
-          <div className="flex flex-col gap-4">
-            <Logo variant="vertical" width={120} height={120} />
-            <p className="text-muted-foreground max-w-sm text-sm text-pretty">
+        <div className="grid gap-16 py-20 lg:grid-cols-[1fr_2fr] lg:gap-20">
+          <div className="flex flex-col items-start gap-6">
+            <Logo variant="vertical" width={112} height={112} className="!h-28 !w-28" />
+            <p className="text-muted-foreground max-w-xs text-sm leading-relaxed text-pretty">
               {footerConfig.description}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 sm:gap-12">
             {footerConfig.columns.map((col) => (
-              <div key={col.title} className="flex flex-col gap-3">
+              <div key={col.title} className="flex flex-col gap-4">
                 <h3 className="text-sm font-semibold">{col.title}</h3>
-                <ul className="flex flex-col gap-2">
+                <ul className="flex flex-col gap-2.5">
                   {col.links.map((link) => (
                     <li key={link.href}>
                       <Link
@@ -37,7 +37,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-border flex flex-col items-center justify-between gap-4 border-t py-6 sm:flex-row">
+        <div className="border-border flex flex-col items-center justify-between gap-4 border-t py-8 sm:flex-row">
           <p className="text-muted-foreground text-xs">{footerConfig.copyright}</p>
           <div className="flex items-center gap-4">
             {siteConfig.social.twitter ? (
