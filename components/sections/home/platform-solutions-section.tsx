@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Bot, CalendarClock, CreditCard } from "lucide-react";
+import { ArrowRight, BarChart3, Bot, CalendarClock, Layers, Plug, Wallet } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/shared/container";
 import { SectionWrapper } from "@/components/shared/section-wrapper";
@@ -27,7 +27,7 @@ const SOLUTIONS = [
     description:
       "Automatiza recordatorios de pago, envío de links de cobro y seguimiento de promesas. Sin perseguir a nadie.",
     href: "/cobranza",
-    icon: CreditCard,
+    icon: Wallet,
     visual: <CobranzaVisual />,
   },
   {
@@ -38,6 +38,27 @@ const SOLUTIONS = [
     href: "/agenda",
     icon: CalendarClock,
     visual: <AgendaVisual />,
+  },
+];
+
+const SECONDARY = [
+  {
+    title: "Integraciones",
+    description: "WhatsApp Business API, Google Calendar, Stripe, Mercado Pago, OpenAI.",
+    icon: Plug,
+    items: ["WhatsApp Business", "Google Calendar", "Stripe · Mercado Pago", "OpenAI · Claude"],
+  },
+  {
+    title: "Analytics",
+    description: "Reportes automáticos de conversaciones, conversión y tiempo ahorrado.",
+    icon: BarChart3,
+    items: ["Dashboard en vivo", "Reportes semanales", "Embudo de conversión", "Exportar CSV"],
+  },
+  {
+    title: "Multi-agente",
+    description: "Crea agentes especializados por área, idioma o sucursal.",
+    icon: Layers,
+    items: ["Agentes ilimitados", "Multi-idioma", "Multi-sucursal", "Permisos por equipo"],
   },
 ];
 
@@ -65,10 +86,20 @@ export function PlatformSolutionsSection() {
             transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.1 }}
             className="mt-6 max-w-3xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl md:text-5xl"
           >
-            Empieza con lo que necesitas hoy.
+            Una plataforma, todo resuelto.
             <br />
-            <span className="text-muted-foreground">Crece cuando tu negocio crezca.</span>
+            <span className="text-muted-foreground">A un costo accesible.</span>
           </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: reduced ? 0 : 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.2 }}
+            className="text-muted-foreground mt-4 max-w-2xl text-pretty sm:text-lg"
+          >
+            Atención, cobranza y agenda funcionan solas. Tú solo te enteras cuando hay algo
+            importante.
+          </motion.p>
         </div>
 
         <motion.div
@@ -88,10 +119,10 @@ export function PlatformSolutionsSection() {
                   onClick={() => setActive(sol.id)}
                   type="button"
                   className={cn(
-                    "group flex flex-col items-start gap-3 rounded-2xl border p-6 text-left transition-all",
+                    "group flex flex-col items-start gap-3 rounded-2xl border-2 p-6 text-left transition-all",
                     isActive
-                      ? "border-primary bg-primary/5 shadow-sm"
-                      : "border-border bg-card hover:border-primary/40",
+                      ? "border-primary bg-primary/10 shadow-primary/10 shadow-md"
+                      : "border-border bg-card hover:border-primary/70 hover:bg-primary/5",
                   )}
                 >
                   <div className="flex w-full items-center justify-between">
@@ -100,7 +131,7 @@ export function PlatformSolutionsSection() {
                         "flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
                         isActive
                           ? "bg-primary text-primary-foreground"
-                          : "bg-primary/10 text-primary",
+                          : "bg-primary/15 text-primary group-hover:bg-primary/20",
                       )}
                     >
                       <Icon className="h-5 w-5" />
@@ -151,6 +182,40 @@ export function PlatformSolutionsSection() {
             </GlowCard>
           </div>
         </motion.div>
+
+        <div className="mt-16 grid gap-4 md:grid-cols-3">
+          {SECONDARY.map((card, i) => {
+            const Icon = card.icon;
+            return (
+              <motion.div
+                key={card.title}
+                initial={{ opacity: 0, y: reduced ? 0 : 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: reduced ? 0 : 0.5, delay: reduced ? 0 : i * 0.08 }}
+              >
+                <GlowCard className="hover:border-primary/60 group h-full p-6 transition-colors">
+                  <div className="bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground flex h-10 w-10 items-center justify-center rounded-lg transition-colors">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="mt-4 text-base font-semibold tracking-tight">{card.title}</h3>
+                  <p className="text-muted-foreground mt-1 text-sm">{card.description}</p>
+                  <ul className="mt-4 space-y-1.5">
+                    {card.items.map((item) => (
+                      <li
+                        key={item}
+                        className="text-muted-foreground flex items-center gap-2 text-xs"
+                      >
+                        <div className="bg-primary h-1 w-1 rounded-full" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </GlowCard>
+              </motion.div>
+            );
+          })}
+        </div>
       </Container>
     </SectionWrapper>
   );
@@ -158,7 +223,7 @@ export function PlatformSolutionsSection() {
 
 function AtencionVisual() {
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-3">
       <div className="border-border/60 bg-background/60 rounded-xl border p-3 text-xs">
         <div className="mb-2 flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-green-500" />
@@ -199,19 +264,19 @@ function CobranzaVisual() {
           name: "Roberto H.",
           amount: "$4,200",
           state: "Pagado",
-          color: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
+          color: "bg-green-100 text-green-700",
         },
         {
           name: "Lucía M.",
           amount: "$1,800",
           state: "Promesa",
-          color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+          color: "bg-blue-100 text-blue-700",
         },
         {
           name: "Andrés C.",
           amount: "$3,100",
           state: "Enviado",
-          color: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
+          color: "bg-amber-100 text-amber-700",
         },
       ].map((item) => (
         <div

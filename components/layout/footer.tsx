@@ -10,7 +10,7 @@ export function Footer() {
       <Container>
         <div className="grid gap-12 py-16 lg:grid-cols-[1.5fr_2.5fr]">
           <div className="flex flex-col gap-4">
-            <Logo variant="full" width={120} height={32} />
+            <Logo variant="vertical" width={120} height={120} />
             <p className="text-muted-foreground max-w-sm text-sm text-pretty">
               {footerConfig.description}
             </p>

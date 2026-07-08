@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/shared/container";
 import { useDemoModal } from "@/components/forms/demo-modal";
 import { MagneticButton } from "@/components/motion/magnetic-button";
-import { TextScramble } from "@/components/motion/text-scramble";
 import { DashboardPreview } from "./dashboard-preview";
 
 export function HeroSection() {
@@ -15,7 +14,7 @@ export function HeroSection() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28">
+    <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28">
       <div
         aria-hidden="true"
         className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,oklch(0.42_0.27_264_/_0.12),transparent_60%)]"
@@ -28,38 +27,17 @@ export function HeroSection() {
       <Container>
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
           <div className="flex flex-col items-start text-left">
-            <motion.div
-              initial={{ opacity: 0, y: reduced ? 0 : 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: reduced ? 0 : 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="border-border bg-background/60 text-muted-foreground mb-6 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium backdrop-blur"
-            >
-              <span className="bg-primary h-1.5 w-1.5 rounded-full" />
-              Para tu negocio, sin importar el tamaño
-            </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: reduced ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: reduced ? 0 : 0.7,
-                delay: reduced ? 0 : 0.1,
                 ease: [0.16, 1, 0.3, 1],
               }}
               className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl"
             >
-              <TextScramble
-                text="La inteligencia artificial,"
-                as="span"
-                trigger="mount"
-                className="block"
-              />
-              <TextScramble
-                text="hecha simple."
-                as="span"
-                trigger="mount"
-                className="text-primary block"
-              />
+              <span className="block">La inteligencia artificial,</span>
+              <span className="text-primary block">hecha simple.</span>
             </motion.h1>
 
             <motion.p
@@ -67,7 +45,7 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: reduced ? 0 : 0.7,
-                delay: reduced ? 0 : 0.4,
+                delay: reduced ? 0 : 0.2,
                 ease: [0.16, 1, 0.3, 1],
               }}
               className="text-muted-foreground mt-6 max-w-xl text-base text-balance sm:text-lg"
@@ -81,12 +59,12 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: reduced ? 0 : 0.7,
-                delay: reduced ? 0 : 0.5,
+                delay: reduced ? 0 : 0.3,
                 ease: [0.16, 1, 0.3, 1],
               }}
               className="mt-8 flex flex-wrap items-center gap-3"
             >
-              <MagneticButton strength={0.4}>
+              <MagneticButton strength={0.2}>
                 <Button
                   size="lg"
                   onClick={() => setDemoOpen(true)}
@@ -96,7 +74,7 @@ export function HeroSection() {
                   <ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Button>
               </MagneticButton>
-              <MagneticButton strength={0.3}>
+              <MagneticButton strength={0.15}>
                 <Button asChild size="lg" variant="outline" className="group h-12 px-6 text-base">
                   <Link href="/plataforma">
                     Conocer la plataforma
@@ -109,10 +87,10 @@ export function HeroSection() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: reduced ? 0 : 0.7, delay: 0.7 }}
+              transition={{ duration: reduced ? 0 : 0.7, delay: 0.5 }}
               className="text-muted-foreground mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm"
             >
-              <span>Empieza en minutos</span>
+              <span className="text-foreground/80">A un costo accesible</span>
               <span className="bg-muted-foreground/40 hidden h-1 w-1 rounded-full sm:block" />
               <span>Sin contratos</span>
               <span className="bg-muted-foreground/40 hidden h-1 w-1 rounded-full sm:block" />
@@ -125,7 +103,7 @@ export function HeroSection() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{
               duration: reduced ? 0 : 0.9,
-              delay: reduced ? 0 : 0.3,
+              delay: reduced ? 0 : 0.2,
               ease: [0.16, 1, 0.3, 1],
             }}
             className="flex justify-center lg:justify-end"

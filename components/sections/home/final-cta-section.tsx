@@ -1,14 +1,13 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/shared/container";
 import { SectionWrapper } from "@/components/shared/section-wrapper";
 import { useDemoModal } from "@/components/forms/demo-modal";
 import { MagneticButton } from "@/components/motion/magnetic-button";
-import { TextScramble } from "@/components/motion/text-scramble";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export function FinalCtaSection() {
   const { setOpen: setDemoOpen } = useDemoModal();
@@ -33,13 +32,9 @@ export function FinalCtaSection() {
             transition={{ duration: reduced ? 0 : 0.7 }}
             className="max-w-3xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl md:text-5xl lg:text-6xl"
           >
-            <TextScramble
-              text="Deja de hacer lo que la tecnología"
-              trigger="view"
-              as="span"
-              className="block"
-            />
-            <TextScramble text="puede hacer por ti." trigger="view" as="span" className="block" />
+            Deja de hacer lo que la tecnología
+            <br />
+            puede hacer por ti.
           </motion.h2>
 
           <motion.p
@@ -59,7 +54,7 @@ export function FinalCtaSection() {
             transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.3 }}
             className="mt-10 flex flex-wrap items-center justify-center gap-3"
           >
-            <MagneticButton strength={0.4}>
+            <MagneticButton strength={0.2}>
               <Button
                 size="lg"
                 variant="secondary"
@@ -70,16 +65,36 @@ export function FinalCtaSection() {
                 <ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Button>
             </MagneticButton>
-            <MagneticButton strength={0.3}>
+            <MagneticButton strength={0.15}>
               <Button
                 asChild
                 size="lg"
-                variant="outline"
-                className="group h-12 border-white/30 bg-transparent px-6 text-base text-white hover:bg-white/10 hover:text-white"
+                className="group h-12 border-0 bg-[#25D366] px-6 text-base text-white hover:bg-[#20bd5a]"
               >
-                <Link href="/contacto">O hablemos por email</Link>
+                <a
+                  href={buildWhatsAppUrl("Hola, quiero más información sobre Charló.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <MessageCircle className="mr-1.5 h-4 w-4" />
+                  Hablemos por WhatsApp
+                </a>
               </Button>
             </MagneticButton>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.45 }}
+            className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm opacity-90"
+          >
+            <span>A un costo accesible</span>
+            <span className="hidden h-1 w-1 rounded-full bg-white/40 sm:block" />
+            <span>Sin contratos</span>
+            <span className="hidden h-1 w-1 rounded-full bg-white/40 sm:block" />
+            <span>Cancela cuando quieras</span>
           </motion.div>
         </div>
       </Container>

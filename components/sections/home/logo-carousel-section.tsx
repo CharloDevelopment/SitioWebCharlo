@@ -35,19 +35,15 @@ export function LogoCarouselSection() {
           </p>
         </motion.div>
 
-        <div
-          className="relative overflow-hidden"
-          style={{
-            maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
-            WebkitMaskImage:
-              "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
-          }}
-        >
-          <div className="animate-marquee flex w-max items-center gap-12 sm:gap-16">
-            {[...CLIENTS, ...CLIENTS, ...CLIENTS].map((client, i) => (
-              <LogoItem key={`${client.name}-${i}`} client={client} />
-            ))}
-          </div>
+        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8 sm:gap-x-16 lg:gap-x-20">
+          {CLIENTS.map((client, i) => (
+            <div key={client.name} className="flex items-center gap-12 sm:gap-16 lg:gap-20">
+              <LogoItem client={client} />
+              {i < CLIENTS.length - 1 ? (
+                <div className="bg-border hidden h-10 w-px sm:block" aria-hidden="true" />
+              ) : null}
+            </div>
+          ))}
         </div>
       </Container>
     </SectionWrapper>
@@ -56,15 +52,15 @@ export function LogoCarouselSection() {
 
 function LogoItem({ client }: { client: Client }) {
   return (
-    <div className="group flex h-16 w-40 shrink-0 items-center justify-center" title={client.name}>
+    <div className="group flex h-16 w-44 shrink-0 items-center justify-center" title={client.name}>
       <Image
         src={client.src}
         alt={client.name}
-        width={160}
+        width={176}
         height={64}
         className={cn(
           "h-full w-auto max-w-full object-contain",
-          "opacity-60 grayscale transition-all duration-500",
+          "opacity-50 grayscale transition-all duration-500",
           "group-hover:opacity-100 group-hover:grayscale-0",
         )}
         unoptimized

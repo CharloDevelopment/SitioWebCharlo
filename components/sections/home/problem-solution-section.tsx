@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ArrowRight,
   CalendarCheck,
   Clock,
   CreditCard,
@@ -13,6 +14,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/shared/container";
 import { SectionWrapper } from "@/components/shared/section-wrapper";
 import { GlowCard } from "@/components/motion/glow-card";
+import { cn } from "@/lib/utils";
 
 type Item = {
   pain: string;
@@ -22,6 +24,9 @@ type Item = {
   painIcon: typeof Clock;
   solutionIcon: typeof CalendarCheck;
   stat: { value: string; label: string };
+  beforeMock: React.ReactNode;
+  afterMock: React.ReactNode;
+  barData: number[];
 };
 
 const ITEMS: Item[] = [
@@ -35,6 +40,34 @@ const ITEMS: Item[] = [
     painIcon: MessageSquareWarning,
     solutionIcon: Clock,
     stat: { value: "0 min", label: "tiempo de respuesta promedio" },
+    beforeMock: (
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-start gap-1.5">
+          <div className="bg-background/60 text-muted-foreground rounded-md px-2 py-1 text-[10px]">
+            ¿Tienen disponible hoy?
+          </div>
+        </div>
+        <div className="text-muted-foreground/60 flex items-center gap-1 px-1 text-[9px]">
+          <span>Enviado 8:14pm</span>
+          <span className="h-1 w-1 rounded-full bg-red-400" />
+          <span className="text-red-500">Sin respuesta</span>
+        </div>
+      </div>
+    ),
+    afterMock: (
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-start justify-end gap-1.5">
+          <div className="bg-primary text-primary-foreground rounded-md px-2 py-1 text-[10px]">
+            Sí, 10am y 4pm. ¿Cuál prefieres?
+          </div>
+        </div>
+        <div className="text-muted-foreground/60 flex items-center justify-end gap-1 px-1 text-[9px]">
+          <span>Charló · 0.8s</span>
+          <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+        </div>
+      </div>
+    ),
+    barData: [10, 8, 6, 4, 2, 1, 0],
   },
   {
     pain: "Persigues pagos uno por uno",
@@ -46,6 +79,21 @@ const ITEMS: Item[] = [
     painIcon: TrendingDown,
     solutionIcon: Wallet,
     stat: { value: "+42%", label: "cobro efectivo en promedio" },
+    beforeMock: (
+      <div className="flex flex-col gap-1">
+        <div className="text-muted-foreground/60 text-[9px]">Cobrado este mes</div>
+        <div className="text-foreground/80 text-base font-semibold">$8,400</div>
+        <div className="text-[9px] text-red-500">↓ 18% vs mes anterior</div>
+      </div>
+    ),
+    afterMock: (
+      <div className="flex flex-col gap-1">
+        <div className="text-muted-foreground/60 text-[9px]">Cobrado este mes</div>
+        <div className="text-primary text-base font-semibold">$11,950</div>
+        <div className="text-[9px] text-green-500">↑ 42% con Charló</div>
+      </div>
+    ),
+    barData: [4, 5, 6, 7, 9, 11, 12],
   },
   {
     pain: "Las citas se te olvidan",
@@ -57,6 +105,30 @@ const ITEMS: Item[] = [
     painIcon: CalendarCheck,
     solutionIcon: CalendarCheck,
     stat: { value: "-30%", label: "no-shows desde el primer mes" },
+    beforeMock: (
+      <div className="grid grid-cols-7 gap-0.5">
+        {[1, 0, 1, 0, 1, 0, 0].map((v, i) => (
+          <div
+            key={i}
+            className={cn(
+              "h-3 rounded-sm",
+              v ? "bg-muted-foreground/30" : "bg-muted-foreground/10",
+            )}
+          />
+        ))}
+      </div>
+    ),
+    afterMock: (
+      <div className="grid grid-cols-7 gap-0.5">
+        {[1, 1, 1, 1, 1, 1, 1].map((v, i) => (
+          <div
+            key={i}
+            className={cn("h-3 rounded-sm", v ? "bg-primary/70" : "bg-muted-foreground/10")}
+          />
+        ))}
+      </div>
+    ),
+    barData: [3, 5, 6, 8, 7, 7, 7],
   },
   {
     pain: "Todo depende de ti",
@@ -68,6 +140,26 @@ const ITEMS: Item[] = [
     painIcon: UserX,
     solutionIcon: CreditCard,
     stat: { value: "10+ h", label: "recuperadas cada semana" },
+    beforeMock: (
+      <div className="flex flex-col gap-1">
+        <div className="text-muted-foreground/60 text-[9px]">Tu tiempo semanal</div>
+        <div className="flex items-center gap-1.5">
+          <div className="bg-muted-foreground/30 h-2 flex-1 rounded-full" />
+        </div>
+        <div className="text-foreground/80 text-[10px]">30h en tareas manuales</div>
+      </div>
+    ),
+    afterMock: (
+      <div className="flex flex-col gap-1">
+        <div className="text-muted-foreground/60 text-[9px]">Con Charló</div>
+        <div className="flex items-center gap-1.5">
+          <div className="bg-primary/70 h-2 w-2/5 rounded-full" />
+          <div className="bg-muted h-2 flex-1 rounded-full" />
+        </div>
+        <div className="text-primary text-[10px]">20h libre, 10h tareas</div>
+      </div>
+    ),
+    barData: [2, 3, 4, 5, 6, 7, 7],
   },
 ];
 
@@ -122,7 +214,7 @@ export function ProblemSolutionSection() {
                     <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
                       Antes
                     </span>
-                    <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-medium text-red-700 dark:bg-red-900/30 dark:text-red-300">
+                    <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-medium text-red-700">
                       caótico
                     </span>
                   </div>
@@ -175,23 +267,31 @@ function ItemCard({ item, index }: { item: Item; index: number }) {
       }}
       className="group"
     >
-      <GlowCard className="p-6 sm:p-8">
+      <GlowCard className="relative overflow-hidden p-6 sm:p-8">
+        <div
+          className="from-primary/0 via-primary/5 to-primary/0 absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b"
+          aria-hidden="true"
+        />
+
         <div className="flex flex-col gap-6">
           <div className="grid gap-6 sm:grid-cols-2">
             <div className="flex flex-col gap-3">
               <div className="text-muted-foreground flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-100 text-red-600">
                   <span className="font-mono text-[10px]">{index + 1}</span>
                 </span>
                 Tu negocio hoy
               </div>
               <div className="flex items-start gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-600">
                   <PainIcon className="h-4 w-4" />
                 </div>
                 <h3 className="text-lg font-semibold tracking-tight">{item.pain}</h3>
               </div>
               <p className="text-muted-foreground text-sm">{item.painDetail}</p>
+              <div className="border-border/40 bg-muted/20 mt-2 rounded-lg border p-3">
+                {item.beforeMock}
+              </div>
             </div>
 
             <div className="bg-primary/5 ring-primary/20 group-hover:bg-primary/10 relative flex flex-col gap-3 rounded-xl p-4 ring-1 transition-colors sm:p-5">
@@ -210,20 +310,39 @@ function ItemCard({ item, index }: { item: Item; index: number }) {
                 <h3 className="text-lg font-semibold tracking-tight">{item.solution}</h3>
               </div>
               <p className="text-foreground/80 text-sm">{item.solutionDetail}</p>
+              <div className="border-primary/20 bg-background/60 mt-2 rounded-lg border p-3">
+                {item.afterMock}
+              </div>
             </div>
           </div>
 
-          <div className="border-border flex items-center gap-4 border-t pt-4">
-            <div>
+          <div className="border-border flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:gap-6">
+            <div className="flex items-baseline gap-3">
               <p className="text-primary text-2xl font-semibold tracking-tight">
                 {item.stat.value}
               </p>
               <p className="text-muted-foreground text-xs">{item.stat.label}</p>
             </div>
-            <div className="text-muted-foreground/60 ml-auto text-[10px] tracking-wide uppercase">
+            <div className="flex items-end gap-0.5 sm:ml-auto">
+              {item.barData.map((v, i) => (
+                <div
+                  key={i}
+                  className="bg-primary/60 w-2 rounded-sm"
+                  style={{ height: `${v * 2.5 + 4}px` }}
+                />
+              ))}
+            </div>
+            <div className="text-muted-foreground/60 text-[10px] tracking-wide uppercase sm:text-right">
               Promedio clientes Charló
             </div>
           </div>
+        </div>
+
+        <div
+          aria-hidden="true"
+          className="text-primary/10 group-hover:text-primary/30 absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 transition-colors sm:block"
+        >
+          <ArrowRight className="h-8 w-8 -rotate-90" />
         </div>
       </GlowCard>
     </motion.div>

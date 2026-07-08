@@ -1,7 +1,20 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
-import { Bot, CalendarClock, CreditCard, Phone } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  Bot,
+  CalendarClock,
+  Check,
+  CheckCheck,
+  CreditCard,
+  Paperclip,
+  Phone,
+  Search,
+  Send,
+  Smile,
+  Video,
+  Wallet,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -9,11 +22,271 @@ type Tab = "atencion" | "cobranza" | "agenda";
 
 const TABS: { id: Tab; label: string; icon: typeof Bot }[] = [
   { id: "atencion", label: "Atención", icon: Bot },
-  { id: "cobranza", label: "Cobranza", icon: CreditCard },
+  { id: "cobranza", label: "Cobranza", icon: Wallet },
   { id: "agenda", label: "Agenda", icon: CalendarClock },
 ];
 
-const ROTATION_INTERVAL = 5500;
+const ROTATION_INTERVAL = 6000;
+
+type Conversation = {
+  initials: string;
+  name: string;
+  preview: string;
+  time: string;
+  unread?: number;
+  online?: boolean;
+  selected?: boolean;
+};
+
+type Message = {
+  from: "client" | "charlo";
+  text?: string;
+  time: string;
+  status?: "sent" | "delivered" | "read";
+  attachment?: "link" | "calendar" | "reminder";
+  typing?: boolean;
+};
+
+type DayDivider = { type: "divider"; label: string };
+type ChatItem = Message | DayDivider;
+
+const FILTERS = ["Todos", "No leídos", "Clientes", "Pagos", "Citas"];
+
+const SCENARIOS: Record<
+  Tab,
+  { conversations: Conversation[]; active: number; chat: ChatItem[]; filterIdx: number }
+> = {
+  atencion: {
+    filterIdx: 0,
+    conversations: [
+      {
+        initials: "MG",
+        name: "María González",
+        preview: "¿Tienen disponible el viernes?",
+        time: "12:42",
+        unread: 2,
+        online: true,
+        selected: true,
+      },
+      {
+        initials: "AP",
+        name: "Ana Pérez",
+        preview: "Gracias, nos vemos el sábado",
+        time: "11:18",
+      },
+      {
+        initials: "LC",
+        name: "Luis Castañeda",
+        preview: "¿Cuánto cuesta la consulta?",
+        time: "10:55",
+        unread: 1,
+      },
+      {
+        initials: "RV",
+        name: "Rosa Velasco",
+        preview: "Perfecto, confirmado",
+        time: "Ayer",
+      },
+      {
+        initials: "DM",
+        name: "Diego Maldonado",
+        preview: "Necesito información",
+        time: "Ayer",
+      },
+      {
+        initials: "SF",
+        name: "Sofía Fuentes",
+        preview: "El servicio incluye garantía?",
+        time: "Lun",
+      },
+    ],
+    active: 0,
+    chat: [
+      { type: "divider", label: "Hoy" },
+      {
+        from: "client",
+        text: "Hola, ¿tienen disponibilidad para el viernes en la mañana?",
+        time: "12:38",
+      },
+      {
+        from: "charlo",
+        text: "Hola María. Tengo espacio a las 9:00 y a las 11:30. ¿Cuál te acomoda mejor?",
+        time: "12:39",
+        status: "read",
+      },
+      {
+        from: "client",
+        text: "A las 11:30 va perfecto",
+        time: "12:40",
+      },
+      {
+        from: "charlo",
+        text: "Listo. Te aparto el viernes 18 a las 11:30. Te mando un recordatorio el jueves. ¿Confirmo?",
+        time: "12:41",
+        status: "read",
+        attachment: "calendar",
+      },
+      {
+        from: "client",
+        text: "Sí, gracias",
+        time: "12:42",
+      },
+      { from: "charlo", typing: true, time: "12:42" },
+    ],
+  },
+  cobranza: {
+    filterIdx: 3,
+    conversations: [
+      {
+        initials: "RH",
+        name: "Roberto Hernández",
+        preview: "Pago realizado. Gracias",
+        time: "13:15",
+        online: true,
+        selected: true,
+      },
+      {
+        initials: "LM",
+        name: "Lucía Martínez",
+        preview: "Listo, mañana temprano",
+        time: "12:08",
+        unread: 1,
+      },
+      {
+        initials: "AC",
+        name: "Andrés Cruz",
+        preview: "¿Aceptan transferencia?",
+        time: "11:30",
+      },
+      {
+        initials: "PG",
+        name: "Patricia Gutiérrez",
+        preview: "Pagado",
+        time: "10:00",
+      },
+      {
+        initials: "JS",
+        name: "Jorge Salinas",
+        preview: "Espero el link por favor",
+        time: "Ayer",
+      },
+      {
+        initials: "MR",
+        name: "Mariana Reyes",
+        preview: "Confirmado",
+        time: "Lun",
+      },
+    ],
+    active: 0,
+    chat: [
+      { type: "divider", label: "Hoy" },
+      {
+        from: "charlo",
+        text: "Hola Roberto. Te recuerdo que tu pago de $4,200 vence hoy. ¿Te envío el link?",
+        time: "10:02",
+        status: "read",
+      },
+      {
+        from: "client",
+        text: "Sí, mándamelo por favor",
+        time: "10:05",
+      },
+      {
+        from: "charlo",
+        text: "Listo. Puedes pagar con tarjeta o transferencia.",
+        time: "10:06",
+        status: "read",
+        attachment: "link",
+      },
+      { type: "divider", label: "Más tarde" },
+      {
+        from: "charlo",
+        text: "Hola Roberto, ¿pudiste realizar el pago?",
+        time: "13:00",
+        status: "read",
+      },
+      {
+        from: "client",
+        text: "Pago realizado. Gracias",
+        time: "13:15",
+      },
+      {
+        from: "charlo",
+        text: "Recibido. Tu saldo está al corriente. Gracias por tu preferencia.",
+        time: "13:15",
+        status: "read",
+      },
+    ],
+  },
+  agenda: {
+    filterIdx: 4,
+    conversations: [
+      {
+        initials: "LO",
+        name: "Lucía Ortega",
+        preview: "Confirmo cita del viernes 10am",
+        time: "14:22",
+        online: true,
+        selected: true,
+      },
+      {
+        initials: "CV",
+        name: "Carlos Vera",
+        preview: "Necesito reagendar",
+        time: "13:50",
+        unread: 1,
+      },
+      {
+        initials: "MR",
+        name: "Mariana Reyes",
+        preview: "A las 4pm perfecto",
+        time: "12:10",
+      },
+      {
+        initials: "JL",
+        name: "Juan López",
+        preview: "Listo, ahí estaré",
+        time: "11:00",
+      },
+      {
+        initials: "EM",
+        name: "Elena Mendoza",
+        preview: "¿Hay espacio mañana?",
+        time: "Ayer",
+      },
+      {
+        initials: "DT",
+        name: "David Torres",
+        preview: "Confirmado",
+        time: "Lun",
+      },
+    ],
+    active: 0,
+    chat: [
+      { type: "divider", label: "Hoy" },
+      {
+        from: "charlo",
+        text: "Hola Lucía. Tienes cita el viernes 18 a las 10:00 con el Dr. Hernández. ¿Confirmas?",
+        time: "14:00",
+        status: "read",
+        attachment: "reminder",
+      },
+      {
+        from: "client",
+        text: "Confirmo cita del viernes 10am",
+        time: "14:22",
+      },
+      {
+        from: "charlo",
+        text: "Perfecto. Te mando recordatorio 24 horas antes. Si necesitas reagendar, dime con tiempo.",
+        time: "14:22",
+        status: "read",
+        attachment: "calendar",
+      },
+      { from: "charlo", typing: true, time: "14:23" },
+    ],
+  },
+};
 
 export function DashboardPreview() {
   const [active, setActive] = useState<Tab>("atencion");
@@ -31,9 +304,11 @@ export function DashboardPreview() {
     return () => clearInterval(id);
   }, [paused]);
 
+  const scenario = SCENARIOS[active];
+
   return (
     <div
-      className="relative w-full max-w-xl"
+      className="relative w-full max-w-2xl"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -80,22 +355,19 @@ export function DashboardPreview() {
           })}
         </div>
 
-        <div className="relative h-[360px] overflow-hidden p-4 sm:p-5">
+        <div className="relative h-[440px] overflow-hidden">
           {TABS.map((tab) => (
             <motion.div
               key={tab.id}
               initial={false}
               animate={{
                 opacity: active === tab.id ? 1 : 0,
-                y: active === tab.id ? 0 : 8,
                 pointerEvents: active === tab.id ? "auto" : "none",
               }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute inset-4 sm:inset-5"
+              className="absolute inset-0"
             >
-              {tab.id === "atencion" ? <AtencionMock /> : null}
-              {tab.id === "cobranza" ? <CobranzaMock /> : null}
-              {tab.id === "agenda" ? <AgendaMock /> : null}
+              <WhatsAppView scenario={scenario} />
             </motion.div>
           ))}
         </div>
@@ -118,166 +390,257 @@ export function DashboardPreview() {
   );
 }
 
-function AtencionMock() {
+function WhatsAppView({ scenario }: { scenario: (typeof SCENARIOS)[Tab] }) {
   return (
-    <div className="flex h-full flex-col gap-2">
-      <div className="border-border/50 flex items-center gap-2 border-b pb-2 text-xs">
-        <div className="bg-primary text-primary-foreground flex h-7 w-7 items-center justify-center rounded-full">
-          <Bot className="h-3.5 w-3.5" />
+    <div className="grid h-full grid-cols-[180px_1fr] sm:grid-cols-[220px_1fr]">
+      <div className="border-border/60 bg-muted/10 flex flex-col border-r">
+        <div className="border-border/60 bg-muted/20 flex items-center gap-2 border-b px-3 py-2.5">
+          <div className="bg-primary text-primary-foreground flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-semibold">
+            JM
+          </div>
+          <span className="text-foreground/80 text-xs font-medium">Tu negocio</span>
         </div>
-        <div className="flex-1">
-          <p className="font-medium">Cliente · WhatsApp</p>
-          <p className="text-muted-foreground text-[10px]">En línea</p>
+
+        <div className="border-border/60 border-b px-2 py-2">
+          <div className="bg-background/60 text-muted-foreground flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[10px]">
+            <Search className="h-3 w-3" />
+            Buscar
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1">
+            {FILTERS.map((f, i) => (
+              <span
+                key={f}
+                className={cn(
+                  "rounded-full px-2 py-0.5 text-[9px] font-medium",
+                  i === scenario.filterIdx
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-background/60 text-muted-foreground",
+                )}
+              >
+                {f}
+              </span>
+            ))}
+          </div>
         </div>
-        <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-green-700 dark:bg-green-900/30 dark:text-green-300">
-          En vivo
-        </span>
+
+        <div className="flex-1 overflow-hidden">
+          {scenario.conversations.map((c) => (
+            <ConversationRow key={c.name} conv={c} />
+          ))}
+        </div>
       </div>
-      <div className="flex flex-1 flex-col gap-2">
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-muted max-w-[80%] rounded-2xl rounded-tl-sm px-3 py-2 text-xs"
-        >
-          ¿Cuánto cuesta la consulta?
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-primary text-primary-foreground max-w-[85%] self-end rounded-2xl rounded-tr-sm px-3 py-2 text-xs"
-        >
-          La consulta general cuesta $800 MXN. ¿Quieres que te ayude a agendar?
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0 }}
-          className="flex max-w-[80%] gap-1"
-        >
-          <div className="bg-muted rounded-2xl rounded-tl-sm px-3 py-2 text-xs">Sí, agendar</div>
-          <div className="bg-muted rounded-2xl rounded-tl-sm px-3 py-2 text-xs">Ver horarios</div>
-        </motion.div>
-      </div>
-      <div className="border-border/60 bg-background/60 text-muted-foreground mt-auto flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px]">
-        <div className="bg-primary h-1.5 w-1.5 animate-pulse rounded-full" />
-        Charló respondiendo en 1.2s
+
+      <div className="flex flex-col">
+        <ChatHeader conv={scenario.conversations[scenario.active]} />
+        <ChatBody items={scenario.chat} />
+        <ChatInput />
       </div>
     </div>
   );
 }
 
-function CobranzaMock() {
-  const items = [
-    { name: "María González", amount: "$2,500", status: "Enviado" },
-    { name: "Roberto H.", amount: "$4,200", status: "Pagado" },
-    { name: "Lucía M.", amount: "$1,800", status: "Promesa" },
-  ];
+function ConversationRow({ conv }: { conv: Conversation }) {
   return (
-    <div className="flex h-full flex-col gap-2">
-      <div className="grid grid-cols-3 gap-2">
-        {[
-          { label: "Cobrado", value: "$8.4K", color: "text-green-600" },
-          { label: "Por cobrar", value: "$6.2K", color: "text-amber-600" },
-          { label: "Vencido", value: "$1.8K", color: "text-red-500" },
-        ].map((stat, i) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1 + i * 0.1 }}
-            className="border-border/50 bg-background/60 rounded-lg border p-2"
-          >
-            <p className="text-muted-foreground text-[9px] tracking-wide uppercase">{stat.label}</p>
-            <p className={cn("text-sm font-semibold", stat.color)}>{stat.value}</p>
-          </motion.div>
-        ))}
+    <div
+      className={cn(
+        "border-border/40 flex cursor-default items-start gap-2 border-b px-2.5 py-2 transition-colors",
+        conv.selected ? "bg-primary/8" : "hover:bg-muted/30",
+      )}
+    >
+      <div className="relative shrink-0">
+        <div
+          className={cn(
+            "flex h-8 w-8 items-center justify-center rounded-full text-[10px] font-semibold",
+            conv.selected ? "bg-primary text-primary-foreground" : "bg-primary/15 text-primary",
+          )}
+        >
+          {conv.initials}
+        </div>
+        {conv.online ? (
+          <div className="border-card absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full border bg-green-500" />
+        ) : null}
       </div>
-      <div className="flex-1 space-y-1.5">
-        {items.map((item, i) => (
-          <motion.div
-            key={item.name}
-            initial={{ opacity: 0, x: -8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 + i * 0.15 }}
-            className="border-border/50 bg-background/60 flex items-center gap-2 rounded-lg border p-2 text-xs"
+      <div className="min-w-0 flex-1">
+        <div className="flex items-baseline justify-between gap-1">
+          <span
+            className={cn(
+              "truncate text-[11px]",
+              conv.unread ? "text-foreground font-semibold" : "text-foreground/80 font-medium",
+            )}
           >
-            <div className="bg-primary/10 text-primary flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-semibold">
-              {item.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
-            </div>
-            <span className="flex-1 truncate font-medium">{item.name}</span>
-            <span className="text-muted-foreground">{item.amount}</span>
-            <span
-              className={cn(
-                "rounded-full px-1.5 py-0.5 text-[9px] font-medium",
-                item.status === "Pagado"
-                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                  : item.status === "Promesa"
-                    ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
-                    : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
-              )}
-            >
-              {item.status}
+            {conv.name}
+          </span>
+          <span className="text-muted-foreground shrink-0 text-[9px]">{conv.time}</span>
+        </div>
+        <div className="mt-0.5 flex items-center gap-1">
+          <span
+            className={cn(
+              "truncate text-[10px]",
+              conv.unread ? "text-foreground/70" : "text-muted-foreground",
+            )}
+          >
+            {conv.preview}
+          </span>
+          {conv.unread ? (
+            <span className="bg-primary text-primary-foreground ml-auto flex h-3.5 min-w-3.5 shrink-0 items-center justify-center rounded-full px-1 text-[8px] font-semibold">
+              {conv.unread}
             </span>
-          </motion.div>
-        ))}
-      </div>
-      <div className="border-border/60 bg-background/60 text-muted-foreground mt-auto flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px]">
-        <div className="bg-primary h-1.5 w-1.5 animate-pulse rounded-full" />2 recordatorios
-        enviados en los últimos 5 min
+          ) : null}
+        </div>
       </div>
     </div>
   );
 }
 
-function AgendaMock() {
+function ChatHeader({ conv }: { conv?: Conversation }) {
+  if (!conv) return null;
   return (
-    <div className="flex h-full flex-col gap-2">
-      <div className="text-muted-foreground flex items-center justify-between text-[10px]">
-        <span>Esta semana</span>
-        <span>15 Jul - 21 Jul</span>
+    <div className="border-border/60 bg-muted/20 flex items-center gap-2.5 border-b px-3 py-2.5">
+      <div className="relative">
+        <div className="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-full text-[10px] font-semibold">
+          {conv.initials}
+        </div>
+        {conv.online ? (
+          <div className="border-card absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full border bg-green-500" />
+        ) : null}
       </div>
-      <div className="border-border/50 bg-background/40 grid flex-1 grid-cols-[28px_repeat(5,1fr)] gap-1 overflow-hidden rounded-lg border p-2">
-        {["9", "10", "11", "12", "16"].map((hour) => (
-          <Fragment key={`row-${hour}`}>
-            <div className="text-muted-foreground text-[9px]">{hour}</div>
-            {Array.from({ length: 5 }).map((_, dayIdx) => {
-              const appt =
-                (dayIdx === 0 && hour === "9") ||
-                (dayIdx === 1 && hour === "10") ||
-                (dayIdx === 2 && hour === "11") ||
-                (dayIdx === 3 && hour === "12") ||
-                (dayIdx === 4 && hour === "16");
-              return (
-                <div
-                  key={`${hour}-${dayIdx}`}
-                  className={cn(
-                    "rounded-sm border-l-2 transition-all",
-                    appt ? "border-primary bg-primary/15" : "bg-background/30 border-transparent",
-                  )}
-                >
-                  {appt ? (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.2 + dayIdx * 0.08 }}
-                      className="p-0.5"
-                    >
-                      <p className="text-primary truncate text-[8px] font-semibold">Cita</p>
-                    </motion.div>
-                  ) : null}
-                </div>
-              );
-            })}
-          </Fragment>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-[11px] font-semibold">{conv.name}</p>
+        <p className="text-muted-foreground text-[9px]">
+          {conv.online ? "En línea" : "Visto hace 2h"}
+        </p>
+      </div>
+      <div className="text-muted-foreground flex items-center gap-2">
+        <Video className="h-3.5 w-3.5" />
+        <Phone className="h-3.5 w-3.5" />
+        <Search className="h-3.5 w-3.5" />
+      </div>
+    </div>
+  );
+}
+
+function ChatBody({ items }: { items: ChatItem[] }) {
+  return (
+    <div className="flex-1 space-y-1.5 overflow-hidden bg-[radial-gradient(ellipse_at_top,oklch(0.42_0.27_264_/_0.04),transparent_60%)] p-3">
+      {items.map((item, i) => {
+        if ("type" in item && item.type === "divider") {
+          return (
+            <div key={`d-${i}`} className="my-2 flex justify-center">
+              <span className="bg-background/70 text-muted-foreground rounded-full px-2 py-0.5 text-[9px] font-medium shadow-sm">
+                {item.label}
+              </span>
+            </div>
+          );
+        }
+        if ("typing" in item && item.typing) {
+          return <TypingBubble key={`t-${i}`} />;
+        }
+        return <MessageBubble key={`m-${i}`} message={item as Message} />;
+      })}
+    </div>
+  );
+}
+
+function MessageBubble({ message }: { message: Message }) {
+  const isCharlo = message.from === "charlo";
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className={cn("flex flex-col gap-0.5", isCharlo ? "items-end" : "items-start")}
+    >
+      {message.attachment === "link" ? (
+        <div className="bg-primary text-primary-foreground max-w-[88%] rounded-lg rounded-tr-sm p-2.5 shadow-sm">
+          <div className="flex items-center gap-2 text-[10px] font-semibold">
+            <CreditCard className="h-3 w-3" />
+            Link de pago
+          </div>
+          <div className="mt-1 text-[10px] opacity-90">$4,200 MXN · vence hoy</div>
+          <div className="mt-2 rounded bg-white/15 px-2 py-1 text-center text-[10px] font-medium">
+            Pagar ahora
+          </div>
+        </div>
+      ) : message.attachment === "calendar" ? (
+        <div className="bg-primary text-primary-foreground max-w-[88%] rounded-lg rounded-tr-sm p-2.5 shadow-sm">
+          <div className="flex items-center gap-2 text-[10px] font-semibold">
+            <CalendarClock className="h-3 w-3" />
+            Cita agendada
+          </div>
+          <div className="mt-1 text-[10px] opacity-90">Vie 18 · 10:00</div>
+          <div className="mt-2 flex gap-1.5">
+            <div className="rounded bg-white/15 px-2 py-0.5 text-[9px]">Confirmar</div>
+            <div className="rounded bg-white/15 px-2 py-0.5 text-[9px]">Reagendar</div>
+          </div>
+        </div>
+      ) : message.attachment === "reminder" ? (
+        <div className="bg-primary text-primary-foreground max-w-[88%] rounded-lg rounded-tr-sm p-2.5 shadow-sm">
+          <div className="flex items-center gap-2 text-[10px] font-semibold">
+            <CalendarClock className="h-3 w-3" />
+            Recordatorio
+          </div>
+          <div className="mt-1 text-[10px] opacity-90">Tienes una cita próxima</div>
+        </div>
+      ) : (
+        <div
+          className={cn(
+            "max-w-[85%] rounded-lg px-2.5 py-1.5 text-[11px] shadow-sm",
+            isCharlo
+              ? "bg-primary text-primary-foreground rounded-tr-sm"
+              : "bg-muted text-foreground rounded-tl-sm",
+          )}
+        >
+          {message.text}
+        </div>
+      )}
+      <div
+        className={cn(
+          "text-muted-foreground flex items-center gap-0.5 px-1 text-[8px]",
+          isCharlo ? "flex-row-reverse" : "",
+        )}
+      >
+        <span>{message.time}</span>
+        {isCharlo ? (
+          message.status === "read" ? (
+            <CheckCheck className="text-primary h-2.5 w-2.5" />
+          ) : message.status === "delivered" ? (
+            <CheckCheck className="h-2.5 w-2.5" />
+          ) : (
+            <Check className="h-2.5 w-2.5" />
+          )
+        ) : null}
+      </div>
+    </motion.div>
+  );
+}
+
+function TypingBubble() {
+  return (
+    <div className="flex justify-start">
+      <div className="bg-muted flex items-center gap-1 rounded-lg rounded-tl-sm px-2.5 py-2">
+        {[0, 1, 2].map((i) => (
+          <motion.span
+            key={i}
+            className="bg-muted-foreground/60 h-1.5 w-1.5 rounded-full"
+            animate={{ opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2 }}
+          />
         ))}
       </div>
-      <div className="border-border/60 bg-background/60 text-muted-foreground mt-auto flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px]">
-        <Phone className="h-2.5 w-2.5" />5 citas esta semana · 2 confirmadas hoy
+    </div>
+  );
+}
+
+function ChatInput() {
+  return (
+    <div className="border-border/60 bg-muted/20 flex items-center gap-2 border-t px-3 py-2.5">
+      <Smile className="text-muted-foreground h-4 w-4" />
+      <Paperclip className="text-muted-foreground h-4 w-4" />
+      <div className="bg-background/60 text-muted-foreground flex-1 rounded-full px-3 py-1.5 text-[10px]">
+        Escribe un mensaje
+      </div>
+      <div className="bg-primary text-primary-foreground flex h-7 w-7 items-center justify-center rounded-full">
+        <Send className="h-3 w-3" />
       </div>
     </div>
   );

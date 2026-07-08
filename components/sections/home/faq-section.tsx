@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { MessageCircle, Minus, Plus } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/shared/container";
 import { SectionWrapper } from "@/components/shared/section-wrapper";
 import { cn } from "@/lib/utils";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 type FaqItem = {
   q: string;
@@ -126,6 +127,53 @@ const FAQS: FaqItem[] = [
     ),
     pro: "Tip: empieza con el plan Inicial y sube cuando lo necesites. Sin penalizaciones por upgrade.",
   },
+  {
+    q: "¿Qué integraciones tiene Charló?",
+    a: (
+      <p>
+        Charló se integra con WhatsApp Business API, Google Calendar, Stripe, Mercado Pago, OpenAI y
+        Claude. Si necesitas una integración a medida, nuestro equipo puede desarrollarla en el plan
+        Empresa. La mayoría de los clientes no necesita nada extra.
+      </p>
+    ),
+  },
+  {
+    q: "¿Charló funciona para varios idiomas?",
+    a: (
+      <p>
+        Sí. Cada agente se configura con su idioma y tono. Puedes tener un agente en español para
+        clientes mexicanos, otro en inglés para turistas, otro en francés para una segunda sucursal.
+        Todo desde la misma plataforma, sin cambiar de número.
+      </p>
+    ),
+    pro: "Tip: Charló detecta automáticamente el idioma del cliente y responde en el mismo idioma.",
+  },
+  {
+    q: "¿Puedo tener varios agentes para diferentes áreas?",
+    a: (
+      <>
+        <p>
+          Sí. En el plan Crecimiento y Empresa puedes crear agentes ilimitados, cada uno
+          especializado: uno para cobranza, otro para citas, otro para soporte, otro para ventas. Tú
+          decides quién hace qué.
+        </p>
+        <p>
+          Esto permite entrenar a cada agente con su propio tono, información y reglas. Charló
+          enruta la conversación al agente correcto según la pregunta del cliente.
+        </p>
+      </>
+    ),
+  },
+  {
+    q: "¿Qué pasa con mis conversaciones si me voy?",
+    a: (
+      <p>
+        Tus conversaciones y datos son tuyos. Si decides cancelar, te exportamos todo en formato CSV
+        y JSON. No te cobramos nada por la exportación. Tus clientes pueden seguir contactándote por
+        WhatsApp, solo que ahora sin Charló.
+      </p>
+    ),
+  },
 ];
 
 export function FaqSection() {
@@ -134,110 +182,159 @@ export function FaqSection() {
 
   return (
     <SectionWrapper spacing="lg" tone="muted" id="faq">
-      <Container size="md">
-        <div className="mb-12 text-center">
-          <motion.span
-            initial={{ opacity: 0, y: reduced ? 0 : 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: reduced ? 0 : 0.5 }}
-            className="border-border bg-background text-muted-foreground inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium tracking-wide uppercase"
-          >
-            Preguntas frecuentes
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: reduced ? 0 : 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.1 }}
-            className="mt-6 text-3xl font-semibold tracking-tight text-balance sm:text-4xl md:text-5xl"
-          >
-            Todo lo que quieres saber
-            <br />
-            <span className="text-muted-foreground">antes de empezar.</span>
-          </motion.h2>
-        </div>
+      <Container>
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <motion.span
+              initial={{ opacity: 0, y: reduced ? 0 : 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: reduced ? 0 : 0.5 }}
+              className="border-border bg-background text-muted-foreground inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium tracking-wide uppercase"
+            >
+              Preguntas frecuentes
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: reduced ? 0 : 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.1 }}
+              className="mt-6 text-3xl font-semibold tracking-tight text-balance sm:text-4xl md:text-5xl"
+            >
+              Todo lo que quieres saber
+              <br />
+              <span className="text-muted-foreground">antes de empezar.</span>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: reduced ? 0 : 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.2 }}
+              className="text-muted-foreground mt-4 max-w-md text-pretty sm:text-lg"
+            >
+              {FAQS.length} respuestas a las preguntas más comunes. Si no encuentras la tuya, te
+              respondemos por WhatsApp.
+            </motion.p>
 
-        <div className="divide-border border-border bg-card divide-y overflow-hidden rounded-2xl border">
-          {FAQS.map((faq, i) => {
-            const id = `faq-${i}`;
-            const isOpen = open === id;
-            return (
-              <motion.div
-                key={id}
-                initial={{ opacity: 0, y: reduced ? 0 : 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{
-                  duration: reduced ? 0 : 0.5,
-                  delay: reduced ? 0 : i * 0.05,
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpen(isOpen ? null : id)}
-                  className="group hover:bg-muted/30 flex w-full items-start justify-between gap-6 px-5 py-5 text-left transition-colors sm:px-6 sm:py-6"
-                  aria-expanded={isOpen}
-                >
-                  <span className="flex-1 text-base leading-snug font-medium sm:text-lg">
-                    {faq.q}
-                  </span>
-                  <span
-                    className={cn(
-                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all",
-                      isOpen
-                        ? "border-primary bg-primary text-primary-foreground rotate-180"
-                        : "border-border bg-background text-muted-foreground group-hover:border-primary/50 group-hover:text-foreground",
-                    )}
-                  >
-                    {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-                  </span>
-                </button>
-                <AnimatePresence initial={false}>
-                  {isOpen ? (
-                    <motion.div
-                      key="content"
-                      initial={reduced ? { opacity: 1, height: "auto" } : { opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={reduced ? { opacity: 1, height: "auto" } : { opacity: 0, height: 0 }}
-                      transition={{
-                        duration: reduced ? 0 : 0.35,
-                        ease: [0.16, 1, 0.3, 1],
-                      }}
-                      className="overflow-hidden"
+            <motion.div
+              initial={{ opacity: 0, y: reduced ? 0 : 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : 0.3 }}
+              className="mt-8 hidden lg:block"
+            >
+              <div className="border-border bg-card rounded-2xl border p-5">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#25D366]/10">
+                    <MessageCircle className="h-4 w-4 text-[#25D366]" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-sm font-semibold">¿Sigues con dudas?</h3>
+                    <p className="text-muted-foreground mt-1 text-xs">
+                      Te respondemos por WhatsApp en menos de 5 minutos.
+                    </p>
+                    <a
+                      href={buildWhatsAppUrl(
+                        "Hola, tengo algunas dudas sobre Charló antes de empezar.",
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-3.5 py-2 text-xs font-medium text-white transition-colors hover:bg-[#20bd5a]"
                     >
-                      <div className="text-muted-foreground space-y-3 px-5 pr-12 pb-6 text-sm leading-relaxed sm:px-6 sm:pr-16 sm:text-base">
-                        {faq.a}
-                        {faq.pro ? (
-                          <div className="border-primary/30 bg-primary/5 text-foreground/80 rounded-lg border p-3 text-xs sm:text-sm">
-                            <span className="text-primary font-semibold">Pro tip:</span> {faq.pro}
-                          </div>
-                        ) : null}
-                      </div>
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
+                      <MessageCircle className="h-3.5 w-3.5" />
+                      Hablemos por WhatsApp
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="divide-border border-border bg-card divide-y overflow-hidden rounded-2xl border">
+            {FAQS.map((faq, i) => {
+              const id = `faq-${i}`;
+              const isOpen = open === id;
+              return (
+                <motion.div
+                  key={id}
+                  initial={{ opacity: 0, y: reduced ? 0 : 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{
+                    duration: reduced ? 0 : 0.5,
+                    delay: reduced ? 0 : i * 0.04,
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpen(isOpen ? null : id)}
+                    className="group hover:bg-muted/30 flex w-full items-start justify-between gap-6 px-5 py-5 text-left transition-colors sm:px-6 sm:py-6"
+                    aria-expanded={isOpen}
+                  >
+                    <span className="flex-1 text-base leading-snug font-medium sm:text-lg">
+                      {faq.q}
+                    </span>
+                    <span
+                      className={cn(
+                        "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all",
+                        isOpen
+                          ? "border-primary bg-primary text-primary-foreground rotate-180"
+                          : "border-border bg-background text-muted-foreground group-hover:border-primary/50 group-hover:text-foreground",
+                      )}
+                    >
+                      {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen ? (
+                      <motion.div
+                        key="content"
+                        initial={
+                          reduced ? { opacity: 1, height: "auto" } : { opacity: 0, height: 0 }
+                        }
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={reduced ? { opacity: 1, height: "auto" } : { opacity: 0, height: 0 }}
+                        transition={{
+                          duration: reduced ? 0 : 0.35,
+                          ease: [0.16, 1, 0.3, 1],
+                        }}
+                        className="overflow-hidden"
+                      >
+                        <div className="text-muted-foreground space-y-3 px-5 pr-12 pb-6 text-sm leading-relaxed sm:px-6 sm:pr-16 sm:text-base">
+                          {faq.a}
+                          {faq.pro ? (
+                            <div className="border-primary/30 bg-primary/5 text-foreground/80 rounded-lg border p-3 text-xs sm:text-sm">
+                              <span className="text-primary font-semibold">Pro tip:</span> {faq.pro}
+                            </div>
+                          ) : null}
+                        </div>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: reduced ? 0 : 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: reduced ? 0 : 0.5 }}
-          className="text-muted-foreground mt-10 text-center text-sm"
+          className="text-muted-foreground mt-10 text-center text-sm lg:hidden"
         >
           ¿Tienes otra pregunta?{" "}
           <a
-            href="/contacto"
+            href={buildWhatsAppUrl("Hola, tengo una duda sobre Charló.")}
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-foreground font-medium underline-offset-4 hover:underline"
           >
-            Escríbenos
+            Escríbenos por WhatsApp
           </a>
           .
-        </motion.p>
+        </motion.div>
       </Container>
     </SectionWrapper>
   );

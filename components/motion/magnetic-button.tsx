@@ -14,18 +14,18 @@ type MagneticButtonProps = {
 export function MagneticButton({
   children,
   className,
-  strength = 0.35,
+  strength = 0.2,
   asChild = false,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const springConfig = { damping: 18, stiffness: 220, mass: 0.4 };
+  const springConfig = { damping: 22, stiffness: 200, mass: 0.4 };
   const sx = useSpring(x, springConfig);
   const sy = useSpring(y, springConfig);
   const scale = useTransform([sx, sy], ([latestX, latestY]) => {
     const distance = Math.sqrt((latestX as number) ** 2 + (latestY as number) ** 2);
-    return 1 + Math.min(distance / 400, 0.08);
+    return 1 + Math.min(distance / 600, 0.03);
   });
 
   function onMove(e: React.MouseEvent<HTMLDivElement>) {

@@ -11,8 +11,8 @@ type CustomCursorProps = {
 export function CustomCursor({ className }: CustomCursorProps) {
   const dotX = useMotionValue(-100);
   const dotY = useMotionValue(-100);
-  const ringX = useSpring(dotX, { damping: 30, stiffness: 250, mass: 0.5 });
-  const ringY = useSpring(dotY, { damping: 30, stiffness: 250, mass: 0.5 });
+  const ringX = useSpring(dotX, { damping: 28, stiffness: 220, mass: 0.5 });
+  const ringY = useSpring(dotY, { damping: 28, stiffness: 220, mass: 0.5 });
   const [hovering, setHovering] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -57,7 +57,7 @@ export function CustomCursor({ className }: CustomCursorProps) {
         ref={ref}
         aria-hidden="true"
         className={cn(
-          "bg-primary pointer-events-none fixed top-0 left-0 z-[100] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full mix-blend-difference",
+          "bg-primary pointer-events-none fixed top-0 left-0 z-[100] h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full mix-blend-difference",
           className,
         )}
         style={{ x: dotX, y: dotY }}
@@ -65,10 +65,10 @@ export function CustomCursor({ className }: CustomCursorProps) {
       <motion.div
         aria-hidden="true"
         className={cn(
-          "pointer-events-none fixed top-0 left-0 z-[99] h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border transition-[width,height,border-color] duration-200",
+          "pointer-events-none fixed top-0 left-0 z-[99] h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full border transition-[width,height,border-color,background-color] duration-200",
           hovering
-            ? "border-primary bg-primary/10 h-16 w-16"
-            : "border-foreground/40 bg-transparent",
+            ? "border-primary/60 bg-primary/5 h-10 w-10"
+            : "border-foreground/20 bg-transparent",
           className,
         )}
         style={{ x: ringX, y: ringY }}
