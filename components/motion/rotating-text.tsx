@@ -11,6 +11,10 @@ type RotatingTextProps = {
   pauseOnHover?: boolean;
 };
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+const ENTER_DURATION = 0.75;
+const EXIT_DURATION = 0.55;
+
 export function RotatingText({
   phrases,
   interval = 4000,
@@ -30,6 +34,27 @@ export function RotatingText({
   }, [paused, reduced, interval, phrases.length]);
 
   const current = phrases[index] ?? phrases[0] ?? "";
+  const longest = phrases.reduce(
+    (longestPhrase, p) => (p.length > longestPhrase.length ? p : longestPhrase),
+    "",
+  );
+
+  const enterTransition = {
+    duration: ENTER_DURATION,
+    ease: EASE,
+  };
+  const exitTransition = {
+    duration: EXIT_DURATION,
+    ease: EASE,
+  };
+
+  if (reduced) {
+    return (
+      <span className={cn("inline-block", className)} aria-live="polite">
+        {current}
+      </span>
+    );
+  }
 
   return (
     <span
@@ -39,19 +64,16 @@ export function RotatingText({
       aria-live="polite"
     >
       <span aria-hidden="true" className="invisible inline-block whitespace-nowrap">
-        {phrases.reduce((longest, p) => (p.length > longest.length ? p : longest), "")}
+        {longest}
       </span>
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={current}
-          initial={reduced ? { opacity: 1 } : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={reduced ? { opacity: 1 } : { opacity: 0, y: -8 }}
-          transition={{
-            duration: reduced ? 0 : 0.4,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          className="absolute inset-0 inline-block whitespace-nowrap"
+          initial={{ opacity: 0, y: 6, filter: "blur(4px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -6, filter: "blur(4px)" }}
+          transition={enterTransition}
+          className="absolute inset-0 inline-block whitespace-nowrap will-change-transform"
         >
           {current}
         </motion.span>
