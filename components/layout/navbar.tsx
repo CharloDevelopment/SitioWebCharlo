@@ -26,7 +26,7 @@ export function Navbar() {
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
           <Link href="/" aria-label="Charlo — Ir al inicio" className="shrink-0">
-            <Logo variant="full" width={120} height={32} priority />
+            <Logo variant="full" width={140} height={36} priority className="!h-9 !w-auto" />
           </Link>
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegación principal">
             {mainNav.map((item) => (
@@ -58,7 +58,7 @@ export function Navbar() {
             >
               <SheetHeader>
                 <SheetTitle>
-                  <Logo variant="full" width={100} height={28} />
+                  <Logo variant="full" width={120} height={32} className="!h-8 !w-auto" />
                 </SheetTitle>
                 <SheetDescription id="mobile-nav-description">
                   Navega por el sitio o solicita una demostración.
