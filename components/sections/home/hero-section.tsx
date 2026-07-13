@@ -15,7 +15,6 @@ const HERO_PHRASES = [
   "sin complicaciones.",
   "para vender más.",
   "al alcance de todos.",
-  "para negocios reales.",
 ];
 
 const RIBBON = [
