@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight, ChevronDown, Menu } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,13 +44,8 @@ export function Navbar() {
               Iniciar sesión
             </Link>
           </Button>
-          <Button
-            size="sm"
-            onClick={() => setDemoOpen(true)}
-            className="group hover:shadow-primary/25 shadow-sm transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-md"
-          >
+          <Button size="sm" onClick={() => setDemoOpen(true)} className="hover:bg-primary/80!">
             Solicitar demostración
-            <ArrowRight className="ml-1.5 h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
           </Button>
         </div>
 
