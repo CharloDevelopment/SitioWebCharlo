@@ -126,11 +126,19 @@ function NavItem({ item }: NavItemProps) {
               <Link
                 key={child.href}
                 href={child.href}
-                className="hover:bg-muted focus-visible:bg-muted flex flex-col gap-0.5 rounded-lg p-3 transition-colors focus-visible:outline-none"
+                className="group/submenu hover:bg-muted/50 focus-visible:bg-muted/50 focus-visible:ring-ring/40 relative flex flex-col gap-0.5 rounded-lg p-3 transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
               >
-                <span className="text-sm font-medium">{child.title}</span>
+                <span
+                  aria-hidden="true"
+                  className="bg-primary absolute top-1/2 left-1 h-5 w-[2px] origin-top -translate-y-1/2 scale-y-0 rounded-full transition-transform duration-200 ease-out group-hover/submenu:scale-y-100 group-focus-visible/submenu:scale-y-100 motion-reduce:duration-0"
+                />
+                <span className="group-hover/submenu:text-primary group-focus-visible/submenu:text-primary text-sm font-medium transition-colors duration-150">
+                  {child.title}
+                </span>
                 {child.description ? (
-                  <span className="text-muted-foreground text-xs">{child.description}</span>
+                  <span className="text-muted-foreground group-hover/submenu:text-foreground/70 group-focus-visible/submenu:text-foreground/70 text-xs leading-snug transition-colors duration-150">
+                    {child.description}
+                  </span>
                 ) : null}
               </Link>
             ))}
