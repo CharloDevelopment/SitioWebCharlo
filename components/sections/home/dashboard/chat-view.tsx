@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ChatHeader } from "./chat-header";
 import { ChatBubble } from "./chat-bubble";
-import { ChatInput } from "./chat-input";
 import type { ChatItem, Conversation, Message } from "./scenarios";
 
 type ChatViewProps = {
@@ -45,7 +44,6 @@ export function ChatView({ conv, visibleItems, onAction }: ChatViewProps) {
           })}
         </AnimatePresence>
       </div>
-      <ChatInput />
     </div>
   );
 }

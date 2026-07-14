@@ -123,20 +123,6 @@ export const SCENARIOS: Record<Tab, Scenario> = {
         preview: "Perfecto, confirmado",
         time: "Ayer",
       },
-      {
-        id: "diego",
-        name: { given: "Diego", family: "Maldonado" },
-        avatar: avatar("men", 45),
-        preview: "Necesito información",
-        time: "Ayer",
-      },
-      {
-        id: "sofia",
-        name: { given: "Sofía", family: "Fuentes" },
-        avatar: avatar("women", 32),
-        preview: "¿El servicio incluye garantía?",
-        time: "Lun",
-      },
     ],
     chat: [
       { type: "divider", label: "Hoy" },
@@ -222,20 +208,6 @@ export const SCENARIOS: Record<Tab, Scenario> = {
         avatar: avatar("women", 65),
         preview: "Pagado",
         time: "10:00",
-      },
-      {
-        id: "jorge",
-        name: { given: "Jorge", family: "Salinas" },
-        avatar: avatar("men", 56),
-        preview: "Espero el link por favor",
-        time: "Ayer",
-      },
-      {
-        id: "mariana",
-        name: { given: "Mariana", family: "Reyes" },
-        avatar: avatar("women", 23),
-        preview: "Confirmado",
-        time: "Lun",
       },
     ],
     chat: [
@@ -326,20 +298,6 @@ export const SCENARIOS: Record<Tab, Scenario> = {
         avatar: avatar("men", 91),
         preview: "Listo, ahí estaré",
         time: "11:00",
-      },
-      {
-        id: "elena",
-        name: { given: "Elena", family: "Mendoza" },
-        avatar: avatar("women", 12),
-        preview: "¿Hay espacio mañana?",
-        time: "Ayer",
-      },
-      {
-        id: "david",
-        name: { given: "David", family: "Torres" },
-        avatar: avatar("men", 24),
-        preview: "Confirmado",
-        time: "Lun",
       },
     ],
     chat: [
