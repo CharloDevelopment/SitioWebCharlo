@@ -18,6 +18,11 @@ type TargetRect = {
 
 const PILL_PADDING = 6;
 
+const SMOOTH = { damping: 28, stiffness: 200, mass: 0.6 };
+const SOFT_BORDER = { damping: 24, stiffness: 180, mass: 0.6 };
+const SOFT_SCALE = { damping: 24, stiffness: 220, mass: 0.5 };
+const SOFT_OPACITY = { damping: 26, stiffness: 220, mass: 0.5 };
+
 export function CustomCursor({ className }: CustomCursorProps) {
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
@@ -26,6 +31,11 @@ export function CustomCursor({ className }: CustomCursorProps) {
   const [enabled, setEnabled] = useState(false);
   const [reduced, setReduced] = useState(false);
   const targetRef = useRef<HTMLElement | null>(null);
+  const stateRef = useRef<CursorState>("default");
+
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -35,17 +45,21 @@ export function CustomCursor({ className }: CustomCursorProps) {
     }
     setEnabled(true);
 
+    function captureRect(el: HTMLElement): TargetRect {
+      const rect = el.getBoundingClientRect();
+      return {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+      };
+    }
+
     function onMove(e: MouseEvent) {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
       if (targetRef.current) {
-        const rect = targetRef.current.getBoundingClientRect();
-        setTarget({
-          left: rect.left,
-          top: rect.top,
-          width: rect.width,
-          height: rect.height,
-        });
+        setTarget(captureRect(targetRef.current));
       }
     }
 
@@ -55,15 +69,10 @@ export function CustomCursor({ className }: CustomCursorProps) {
 
       const navEl = el.closest('[data-cursor="nav-link"]') as HTMLElement | null;
       if (navEl) {
-        const rect = navEl.getBoundingClientRect();
+        const isSame = targetRef.current === navEl;
         targetRef.current = navEl;
-        setTarget({
-          left: rect.left,
-          top: rect.top,
-          width: rect.width,
-          height: rect.height,
-        });
-        setState("nav-link");
+        setTarget(captureRect(navEl));
+        if (!isSame) setState("nav-link");
         return;
       }
 
@@ -72,8 +81,17 @@ export function CustomCursor({ className }: CustomCursorProps) {
           "a, button, [role='button'], input, textarea, select, [data-cursor-hover], label, [data-magnetic]",
         ),
       );
-      targetRef.current = null;
-      setTarget(null);
+      if (stateRef.current === "nav-link") {
+        if (targetRef.current) {
+          setTarget(null);
+          targetRef.current = null;
+        }
+      } else {
+        if (targetRef.current) {
+          setTarget(null);
+          targetRef.current = null;
+        }
+      }
       setState(isInteractive ? "link" : "default");
     }
 
@@ -81,10 +99,22 @@ export function CustomCursor({ className }: CustomCursorProps) {
       const el = e.target as HTMLElement | null;
       if (!el) return;
       const related = e.relatedTarget as HTMLElement | null;
+
       if (related && el.contains(related)) return;
-      targetRef.current = null;
-      setTarget(null);
-      setState("default");
+
+      const nextNav = related?.closest('[data-cursor="nav-link"]') as HTMLElement | null;
+      if (nextNav) {
+        if (stateRef.current === "nav-link" && targetRef.current) {
+          return;
+        }
+        return;
+      }
+
+      if (stateRef.current !== "default") {
+        targetRef.current = null;
+        setTarget(null);
+        setState("default");
+      }
     }
 
     window.addEventListener("mousemove", onMove, { passive: true });
@@ -122,19 +152,18 @@ type CursorRenderProps = {
 };
 
 function CursorRender({ state, mouseX, mouseY, target, reduced, className }: CursorRenderProps) {
-  const ringX = useSpring(mouseX, { damping: 28, stiffness: 220, mass: 0.5 });
-  const ringY = useSpring(mouseY, { damping: 28, stiffness: 220, mass: 0.5 });
+  const ringX = useSpring(mouseX, SMOOTH);
+  const ringY = useSpring(mouseY, SMOOTH);
 
-  const pillX = useSpring(mouseX, { damping: 32, stiffness: 350, mass: 0.5 });
-  const pillY = useSpring(mouseY, { damping: 32, stiffness: 350, mass: 0.5 });
+  const pillX = useSpring(mouseX, SMOOTH);
+  const pillY = useSpring(mouseY, SMOOTH);
 
-  const sizeSpring = { damping: 26, stiffness: 320, mass: 0.5 };
-
-  const w = useSpring(28, sizeSpring);
-  const h = useSpring(28, sizeSpring);
-  const borderRadius = useSpring(9999, { damping: 26, stiffness: 280 });
-  const dotScale = useSpring(1, { damping: 22, stiffness: 280 });
-  const ringOpacity = useSpring(1, { damping: 26, stiffness: 280 });
+  const w = useSpring(28, SMOOTH);
+  const h = useSpring(28, SMOOTH);
+  const borderRadius = useSpring(9999, SOFT_BORDER);
+  const dotScale = useSpring(1, SOFT_SCALE);
+  const ringOpacity = useSpring(1, SOFT_OPACITY);
+  const pillOpacity = useSpring(0, SOFT_OPACITY);
 
   useEffect(() => {
     if (state === "nav-link" && target) {
@@ -144,26 +173,23 @@ function CursorRender({ state, mouseX, mouseY, target, reduced, className }: Cur
       pillY.set(target.top + target.height / 2);
       borderRadius.set(9999);
       dotScale.set(0);
+      pillOpacity.set(1);
     } else if (state === "link") {
       w.set(40);
       h.set(40);
       borderRadius.set(9999);
       dotScale.set(1);
+      pillOpacity.set(0);
     } else {
       w.set(28);
       h.set(28);
       borderRadius.set(9999);
       dotScale.set(1);
+      pillOpacity.set(0);
     }
-  }, [state, target, w, h, borderRadius, dotScale, pillX, pillY]);
-
-  useEffect(() => {
-    ringOpacity.set(state === "nav-link" ? 0 : 1);
-  }, [state, ringOpacity]);
+  }, [state, target, w, h, borderRadius, dotScale, pillOpacity, pillX, pillY]);
 
   const pillMode = state === "nav-link";
-  const useMouseRing = !pillMode;
-  const usePillRing = pillMode;
 
   return (
     <>
@@ -189,12 +215,12 @@ function CursorRender({ state, mouseX, mouseY, target, reduced, className }: Cur
           className,
         )}
         style={{
-          x: useMouseRing ? ringX : pillX,
-          y: useMouseRing ? ringY : pillY,
-          width: useMouseRing ? w : 0,
-          height: useMouseRing ? h : 0,
+          x: pillMode ? pillX : ringX,
+          y: pillMode ? pillY : ringY,
+          width: w,
+          height: h,
           borderRadius,
-          opacity: useMouseRing ? 1 : 0,
+          opacity: pillMode ? 0 : 1,
         }}
       />
       <motion.div
@@ -204,12 +230,12 @@ function CursorRender({ state, mouseX, mouseY, target, reduced, className }: Cur
           className,
         )}
         style={{
-          x: usePillRing ? pillX : 0,
-          y: usePillRing ? pillY : 0,
-          width: usePillRing ? w : 0,
-          height: usePillRing ? h : 0,
+          x: pillX,
+          y: pillY,
+          width: w,
+          height: h,
           borderRadius,
-          opacity: usePillRing ? (reduced ? 1 : 1) : 0,
+          opacity: pillMode ? 1 : 0,
         }}
       />
     </>

@@ -37,9 +37,11 @@ export function Navbar() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <Button variant="ghost" size="sm" asChild>
-            <Link href="/login">Iniciar sesión</Link>
+            <Link href="/login" data-cursor="nav-link">
+              Iniciar sesión
+            </Link>
           </Button>
-          <Button size="sm" onClick={() => setDemoOpen(true)}>
+          <Button size="sm" data-cursor="nav-link" onClick={() => setDemoOpen(true)}>
             Solicitar demostración
           </Button>
         </div>
