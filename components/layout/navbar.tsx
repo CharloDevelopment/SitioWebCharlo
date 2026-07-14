@@ -37,7 +37,12 @@ export function Navbar() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <Button variant="ghost" size="sm" asChild>
-            <Link href="/login">Iniciar sesión</Link>
+            <Link
+              href="/login"
+              className="hover:text-foreground! focus-visible:text-foreground! after:bg-foreground/40 relative after:absolute after:right-3 after:bottom-1 after:left-3 after:h-px after:origin-left after:scale-x-0 after:transition-transform after:duration-300 after:ease-out hover:bg-transparent! hover:after:scale-x-100 focus-visible:bg-transparent! focus-visible:after:scale-x-100 motion-reduce:after:transition-none"
+            >
+              Iniciar sesión
+            </Link>
           </Button>
           <Button size="sm" onClick={() => setDemoOpen(true)}>
             Solicitar demostración
