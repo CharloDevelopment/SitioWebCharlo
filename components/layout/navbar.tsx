@@ -36,13 +36,12 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <Button
-            variant="ghost"
-            size="sm"
-            asChild
-            className="hover:bg-transparent hover:text-inherit"
-          >
-            <Link href="/login" data-cursor="nav-link">
+          <Button variant="ghost" size="sm" asChild>
+            <Link
+              href="/login"
+              data-cursor="nav-link"
+              className="hover:bg-transparent! hover:text-inherit!"
+            >
               Iniciar sesión
             </Link>
           </Button>
