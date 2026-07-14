@@ -35,7 +35,7 @@ export function HeroSection() {
       />
 
       <Container>
-        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-12 xl:grid-cols-[0.95fr_1.15fr] xl:gap-16">
           <div className="flex flex-col items-start text-left">
             <motion.h1
               initial={{ opacity: 0, y: reduced ? 0 : 20 }}
