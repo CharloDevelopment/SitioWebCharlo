@@ -69,9 +69,9 @@ export function RotatingText({
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={current}
-          initial={{ opacity: 0, y: 6, filter: "blur(4px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -6, filter: "blur(4px)" }}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
           transition={enterTransition}
           className="absolute inset-0 inline-block whitespace-nowrap will-change-transform"
         >
