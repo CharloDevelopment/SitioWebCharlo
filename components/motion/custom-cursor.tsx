@@ -30,11 +30,14 @@ const INTERACTIVE_SELECTOR =
 export function CustomCursor({ className }: CustomCursorProps) {
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
+  const pillAnchorX = useMotionValue(-100);
+  const pillAnchorY = useMotionValue(-100);
   const [state, setState] = useState<CursorState>("default");
   const [target, setTarget] = useState<TargetRect | null>(null);
   const [enabled, setEnabled] = useState(false);
   const targetRef = useRef<HTMLElement | null>(null);
   const stateRef = useRef<CursorState>("default");
+  const lastRectRef = useRef<TargetRect | null>(null);
 
   useEffect(() => {
     stateRef.current = state;
@@ -81,6 +84,7 @@ export function CustomCursor({ className }: CustomCursorProps) {
     function clearNavTarget() {
       if (targetRef.current) {
         targetRef.current = null;
+        lastRectRef.current = null;
         setTarget(null);
       }
     }
@@ -95,7 +99,20 @@ export function CustomCursor({ className }: CustomCursorProps) {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
       if (targetRef.current) {
-        setTarget(captureRect(targetRef.current));
+        const rect = captureRect(targetRef.current);
+        const last = lastRectRef.current;
+        if (
+          !last ||
+          last.left !== rect.left ||
+          last.top !== rect.top ||
+          last.width !== rect.width ||
+          last.height !== rect.height
+        ) {
+          lastRectRef.current = rect;
+          setTarget(rect);
+          pillAnchorX.set(rect.left + rect.width / 2);
+          pillAnchorY.set(rect.top + rect.height / 2);
+        }
       }
     }
 
@@ -106,8 +123,12 @@ export function CustomCursor({ className }: CustomCursorProps) {
       const navEl = isNavLink(el);
       if (navEl) {
         if (targetRef.current !== navEl) {
+          const rect = captureRect(navEl);
           targetRef.current = navEl;
-          setTarget(captureRect(navEl));
+          lastRectRef.current = rect;
+          setTarget(rect);
+          pillAnchorX.set(rect.left + rect.width / 2);
+          pillAnchorY.set(rect.top + rect.height / 2);
         }
         if (stateRef.current !== "nav-link") setState("nav-link");
         return;
@@ -158,7 +179,7 @@ export function CustomCursor({ className }: CustomCursorProps) {
       window.removeEventListener("mouseout", onOut);
       document.removeEventListener("mouseleave", onLeaveWindow);
     };
-  }, [mouseX, mouseY]);
+  }, [mouseX, mouseY, pillAnchorX, pillAnchorY]);
 
   if (!enabled) return null;
 
@@ -168,6 +189,8 @@ export function CustomCursor({ className }: CustomCursorProps) {
       mouseX={mouseX}
       mouseY={mouseY}
       target={target}
+      pillAnchorX={pillAnchorX}
+      pillAnchorY={pillAnchorY}
       className={className}
     />
   );
@@ -178,15 +201,24 @@ type CursorRenderProps = {
   mouseX: ReturnType<typeof useMotionValue<number>>;
   mouseY: ReturnType<typeof useMotionValue<number>>;
   target: TargetRect | null;
+  pillAnchorX: ReturnType<typeof useMotionValue<number>>;
+  pillAnchorY: ReturnType<typeof useMotionValue<number>>;
   className?: string;
 };
 
-function CursorRender({ state, mouseX, mouseY, target, className }: CursorRenderProps) {
+function CursorRender({
+  state,
+  mouseX,
+  mouseY,
+  target,
+  pillAnchorX,
+  pillAnchorY,
+  className,
+}: CursorRenderProps) {
   const ringX = useSpring(mouseX, SPRING_POS);
   const ringY = useSpring(mouseY, SPRING_POS);
-
-  const pillX = useSpring(mouseX, SPRING_POS);
-  const pillY = useSpring(mouseY, SPRING_POS);
+  const pillX = useSpring(pillAnchorX, SPRING_POS);
+  const pillY = useSpring(pillAnchorY, SPRING_POS);
 
   const w = useSpring(28, SPRING_SIZE);
   const h = useSpring(28, SPRING_SIZE);
@@ -205,11 +237,13 @@ function CursorRender({ state, mouseX, mouseY, target, className }: CursorRender
         borderRadius.set(9999);
         dotScale.set(0);
         pillOpacity.set(1);
+        ringOpacity.set(0);
       } else {
         w.set(28);
         h.set(28);
         dotScale.set(1);
         pillOpacity.set(0);
+        ringOpacity.set(1);
       }
     } else if (state === "link") {
       w.set(40);
@@ -217,14 +251,16 @@ function CursorRender({ state, mouseX, mouseY, target, className }: CursorRender
       borderRadius.set(9999);
       dotScale.set(1);
       pillOpacity.set(0);
+      ringOpacity.set(1);
     } else {
       w.set(28);
       h.set(28);
       borderRadius.set(9999);
       dotScale.set(1);
       pillOpacity.set(0);
+      ringOpacity.set(1);
     }
-  }, [state, target, w, h, borderRadius, dotScale, pillOpacity, pillX, pillY]);
+  }, [state, target, w, h, borderRadius, dotScale, pillOpacity, ringOpacity, pillX, pillY]);
 
   const pillMode = state === "nav-link";
 
@@ -252,12 +288,12 @@ function CursorRender({ state, mouseX, mouseY, target, className }: CursorRender
           className,
         )}
         style={{
-          x: pillMode ? pillX : ringX,
-          y: pillMode ? pillY : ringY,
+          x: ringX,
+          y: ringY,
           width: w,
           height: h,
           borderRadius,
-          opacity: pillMode ? 0 : 1,
+          opacity: ringOpacity,
         }}
       />
       <motion.div
@@ -272,7 +308,7 @@ function CursorRender({ state, mouseX, mouseY, target, className }: CursorRender
           width: w,
           height: h,
           borderRadius,
-          opacity: pillMode ? 1 : 0,
+          opacity: pillOpacity,
         }}
       />
     </>
