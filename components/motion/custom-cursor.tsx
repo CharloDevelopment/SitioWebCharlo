@@ -18,10 +18,11 @@ type TargetRect = {
 
 const PILL_PADDING = 6;
 
-const SMOOTH = { damping: 28, stiffness: 200, mass: 0.6 };
-const SOFT_BORDER = { damping: 24, stiffness: 180, mass: 0.6 };
-const SOFT_SCALE = { damping: 24, stiffness: 220, mass: 0.5 };
-const SOFT_OPACITY = { damping: 26, stiffness: 220, mass: 0.5 };
+const SPRING_POS = { damping: 32, stiffness: 160, mass: 0.7 };
+const SPRING_SIZE = { damping: 32, stiffness: 160, mass: 0.7 };
+const SPRING_RADIUS = { damping: 28, stiffness: 160, mass: 0.6 };
+const SPRING_OPACITY = { damping: 28, stiffness: 200, mass: 0.5 };
+const SPRING_DOT = { damping: 26, stiffness: 200, mass: 0.5 };
 
 export function CustomCursor({ className }: CustomCursorProps) {
   const mouseX = useMotionValue(-100);
@@ -29,7 +30,6 @@ export function CustomCursor({ className }: CustomCursorProps) {
   const [state, setState] = useState<CursorState>("default");
   const [target, setTarget] = useState<TargetRect | null>(null);
   const [enabled, setEnabled] = useState(false);
-  const [reduced, setReduced] = useState(false);
   const targetRef = useRef<HTMLElement | null>(null);
   const stateRef = useRef<CursorState>("default");
 
@@ -41,7 +41,8 @@ export function CustomCursor({ className }: CustomCursorProps) {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setReduced(true);
+      setEnabled(true);
+      return;
     }
     setEnabled(true);
 
@@ -53,6 +54,23 @@ export function CustomCursor({ className }: CustomCursorProps) {
         width: rect.width,
         height: rect.height,
       };
+    }
+
+    function isNavLink(el: HTMLElement | null): HTMLElement | null {
+      if (!el) return null;
+      return el.closest('[data-cursor="nav-link"]') as HTMLElement | null;
+    }
+
+    function findNavDescendant(el: HTMLElement | null): HTMLElement | null {
+      if (!el) return null;
+      return el.querySelector('[data-cursor="nav-link"]') as HTMLElement | null;
+    }
+
+    function clearNavTarget() {
+      if (targetRef.current) {
+        targetRef.current = null;
+        setTarget(null);
+      }
     }
 
     function onMove(e: MouseEvent) {
@@ -67,31 +85,22 @@ export function CustomCursor({ className }: CustomCursorProps) {
       const el = e.target as HTMLElement | null;
       if (!el) return;
 
-      const navEl = el.closest('[data-cursor="nav-link"]') as HTMLElement | null;
+      const navEl = isNavLink(el);
       if (navEl) {
-        const isSame = targetRef.current === navEl;
-        targetRef.current = navEl;
-        setTarget(captureRect(navEl));
-        if (!isSame) setState("nav-link");
+        if (targetRef.current !== navEl) {
+          targetRef.current = navEl;
+          setTarget(captureRect(navEl));
+        }
+        if (stateRef.current !== "nav-link") setState("nav-link");
         return;
       }
 
+      clearNavTarget();
       const isInteractive = Boolean(
         el.closest(
           "a, button, [role='button'], input, textarea, select, [data-cursor-hover], label, [data-magnetic]",
         ),
       );
-      if (stateRef.current === "nav-link") {
-        if (targetRef.current) {
-          setTarget(null);
-          targetRef.current = null;
-        }
-      } else {
-        if (targetRef.current) {
-          setTarget(null);
-          targetRef.current = null;
-        }
-      }
       setState(isInteractive ? "link" : "default");
     }
 
@@ -102,17 +111,15 @@ export function CustomCursor({ className }: CustomCursorProps) {
 
       if (related && el.contains(related)) return;
 
-      const nextNav = related?.closest('[data-cursor="nav-link"]') as HTMLElement | null;
-      if (nextNav) {
-        if (stateRef.current === "nav-link" && targetRef.current) {
-          return;
-        }
-        return;
+      const currentNav = isNavLink(el);
+      if (currentNav) {
+        const nextNav = isNavLink(related);
+        if (nextNav && nextNav !== currentNav) return;
+        if (findNavDescendant(related)) return;
       }
 
       if (stateRef.current !== "default") {
-        targetRef.current = null;
-        setTarget(null);
+        clearNavTarget();
         setState("default");
       }
     }
@@ -136,7 +143,6 @@ export function CustomCursor({ className }: CustomCursorProps) {
       mouseX={mouseX}
       mouseY={mouseY}
       target={target}
-      reduced={reduced}
       className={className}
     />
   );
@@ -147,33 +153,39 @@ type CursorRenderProps = {
   mouseX: ReturnType<typeof useMotionValue<number>>;
   mouseY: ReturnType<typeof useMotionValue<number>>;
   target: TargetRect | null;
-  reduced: boolean;
   className?: string;
 };
 
-function CursorRender({ state, mouseX, mouseY, target, reduced, className }: CursorRenderProps) {
-  const ringX = useSpring(mouseX, SMOOTH);
-  const ringY = useSpring(mouseY, SMOOTH);
+function CursorRender({ state, mouseX, mouseY, target, className }: CursorRenderProps) {
+  const ringX = useSpring(mouseX, SPRING_POS);
+  const ringY = useSpring(mouseY, SPRING_POS);
 
-  const pillX = useSpring(mouseX, SMOOTH);
-  const pillY = useSpring(mouseY, SMOOTH);
+  const pillX = useSpring(mouseX, SPRING_POS);
+  const pillY = useSpring(mouseY, SPRING_POS);
 
-  const w = useSpring(28, SMOOTH);
-  const h = useSpring(28, SMOOTH);
-  const borderRadius = useSpring(9999, SOFT_BORDER);
-  const dotScale = useSpring(1, SOFT_SCALE);
-  const ringOpacity = useSpring(1, SOFT_OPACITY);
-  const pillOpacity = useSpring(0, SOFT_OPACITY);
+  const w = useSpring(28, SPRING_SIZE);
+  const h = useSpring(28, SPRING_SIZE);
+  const borderRadius = useSpring(9999, SPRING_RADIUS);
+  const dotScale = useSpring(1, SPRING_DOT);
+  const ringOpacity = useSpring(1, SPRING_OPACITY);
+  const pillOpacity = useSpring(0, SPRING_OPACITY);
 
   useEffect(() => {
-    if (state === "nav-link" && target) {
-      w.set(target.width + PILL_PADDING * 2);
-      h.set(target.height + PILL_PADDING * 2);
-      pillX.set(target.left + target.width / 2);
-      pillY.set(target.top + target.height / 2);
-      borderRadius.set(9999);
-      dotScale.set(0);
-      pillOpacity.set(1);
+    if (state === "nav-link") {
+      if (target) {
+        w.set(target.width + PILL_PADDING * 2);
+        h.set(target.height + PILL_PADDING * 2);
+        pillX.set(target.left + target.width / 2);
+        pillY.set(target.top + target.height / 2);
+        borderRadius.set(9999);
+        dotScale.set(0);
+        pillOpacity.set(1);
+      } else {
+        w.set(28);
+        h.set(28);
+        dotScale.set(1);
+        pillOpacity.set(0);
+      }
     } else if (state === "link") {
       w.set(40);
       h.set(40);
