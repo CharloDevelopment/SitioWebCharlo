@@ -108,6 +108,7 @@ function NavItem({ item }: NavItemProps) {
       <div className="group relative">
         <button
           type="button"
+          data-cursor="nav-link"
           className="text-foreground/80 hover:text-foreground focus-visible:ring-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
           aria-haspopup="true"
         >
@@ -126,6 +127,7 @@ function NavItem({ item }: NavItemProps) {
               <Link
                 key={child.href}
                 href={child.href}
+                data-cursor="nav-link"
                 className="hover:bg-muted focus-visible:bg-muted flex flex-col gap-0.5 rounded-lg p-3 transition-colors focus-visible:outline-none"
               >
                 <span className="text-sm font-medium">{child.title}</span>
@@ -143,6 +145,7 @@ function NavItem({ item }: NavItemProps) {
   return (
     <Link
       href={item.href}
+      data-cursor="nav-link"
       className="text-foreground/80 hover:text-foreground focus-visible:ring-ring rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
     >
       {item.title}
