@@ -6,7 +6,6 @@ import { HowItWorksSection } from "@/components/sections/home/how-it-works-secti
 import { LogoCarouselSection } from "@/components/sections/home/logo-carousel-section";
 import { FaqSection } from "@/components/sections/home/faq-section";
 import { FinalCtaSection } from "@/components/sections/home/final-cta-section";
-import { CustomCursor } from "@/components/motion/custom-cursor";
 import { siteConfig } from "@/config/site";
 
 const FAQS_SCHEMA = [
@@ -122,7 +121,6 @@ export default function HomePage() {
         }}
       />
 
-      <CustomCursor />
       <HeroSection />
       <ProblemSolutionSection />
       <PlatformSolutionsSection />
