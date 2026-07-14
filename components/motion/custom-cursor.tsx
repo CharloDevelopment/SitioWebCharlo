@@ -24,6 +24,9 @@ const SPRING_RADIUS = { damping: 28, stiffness: 160, mass: 0.6 };
 const SPRING_OPACITY = { damping: 28, stiffness: 200, mass: 0.5 };
 const SPRING_DOT = { damping: 26, stiffness: 200, mass: 0.5 };
 
+const INTERACTIVE_SELECTOR =
+  "a, button, [role='button'], input, textarea, select, [data-cursor-hover], label, [data-magnetic]";
+
 export function CustomCursor({ className }: CustomCursorProps) {
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
@@ -41,7 +44,6 @@ export function CustomCursor({ className }: CustomCursorProps) {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setEnabled(true);
       return;
     }
     setEnabled(true);
@@ -66,11 +68,27 @@ export function CustomCursor({ className }: CustomCursorProps) {
       return el.querySelector('[data-cursor="nav-link"]') as HTMLElement | null;
     }
 
+    function findInteractiveAncestor(el: HTMLElement | null): HTMLElement | null {
+      if (!el) return null;
+      return el.closest(INTERACTIVE_SELECTOR) as HTMLElement | null;
+    }
+
+    function findInteractiveDescendant(el: HTMLElement | null): HTMLElement | null {
+      if (!el) return null;
+      return el.querySelector(INTERACTIVE_SELECTOR) as HTMLElement | null;
+    }
+
     function clearNavTarget() {
       if (targetRef.current) {
         targetRef.current = null;
         setTarget(null);
       }
+    }
+
+    function resetToDefault() {
+      if (stateRef.current === "default" && !targetRef.current) return;
+      clearNavTarget();
+      setState("default");
     }
 
     function onMove(e: MouseEvent) {
@@ -95,12 +113,12 @@ export function CustomCursor({ className }: CustomCursorProps) {
         return;
       }
 
+      if (stateRef.current === "nav-link" && findNavDescendant(el)) {
+        return;
+      }
+
       clearNavTarget();
-      const isInteractive = Boolean(
-        el.closest(
-          "a, button, [role='button'], input, textarea, select, [data-cursor-hover], label, [data-magnetic]",
-        ),
-      );
+      const isInteractive = Boolean(el.closest(INTERACTIVE_SELECTOR));
       setState(isInteractive ? "link" : "default");
     }
 
@@ -108,30 +126,37 @@ export function CustomCursor({ className }: CustomCursorProps) {
       const el = e.target as HTMLElement | null;
       if (!el) return;
       const related = e.relatedTarget as HTMLElement | null;
-
       if (related && el.contains(related)) return;
 
-      const currentNav = isNavLink(el);
-      if (currentNav) {
-        const nextNav = isNavLink(related);
-        if (nextNav && nextNav !== currentNav) return;
+      if (stateRef.current === "nav-link") {
+        if (isNavLink(related)) return;
         if (findNavDescendant(related)) return;
+        resetToDefault();
+        return;
       }
 
-      if (stateRef.current !== "default") {
-        clearNavTarget();
-        setState("default");
+      if (stateRef.current === "link") {
+        if (findInteractiveAncestor(related)) return;
+        if (findInteractiveDescendant(related)) return;
+        resetToDefault();
+        return;
       }
+    }
+
+    function onLeaveWindow() {
+      resetToDefault();
     }
 
     window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("mouseover", onOver, { passive: true });
     window.addEventListener("mouseout", onOut, { passive: true });
+    document.addEventListener("mouseleave", onLeaveWindow);
 
     return () => {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseover", onOver);
       window.removeEventListener("mouseout", onOut);
+      document.removeEventListener("mouseleave", onLeaveWindow);
     };
   }, [mouseX, mouseY]);
 
