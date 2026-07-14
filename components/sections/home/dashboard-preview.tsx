@@ -3,10 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Logo } from "@/components/shared/logo";
 import { ChatView } from "./dashboard/chat-view";
 import { ConversationList } from "./dashboard/conversation-list";
-import { SCENARIOS, TABS, type ChatItem, type Message, type Tab } from "./dashboard/scenarios";
+import { SCENARIOS, TABS, type ChatItem, type Tab } from "./dashboard/scenarios";
 
 const ROTATION_INTERVAL = 14000;
 const RESUME_AFTER_INTERACTION = 5000;
@@ -166,8 +165,13 @@ export function DashboardPreview() {
             <div className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
           </div>
           <div className="bg-background/60 ml-auto flex items-center gap-1.5 rounded-md px-2 py-1">
-            <Logo variant="mark" width={14} height={14} className="!h-3.5 !w-3.5" />
-            <span className="text-foreground/80 text-[10px] font-semibold">Charló</span>
+            <img
+              src="/brand/logo-dashboard.png"
+              alt="Charló"
+              width={20}
+              height={20}
+              className="h-5 w-5 object-contain"
+            />
             <div className="h-1.5 w-1.5 rounded-full bg-green-500" aria-hidden="true" />
           </div>
         </div>
@@ -199,7 +203,7 @@ export function DashboardPreview() {
           })}
         </div>
 
-        <div className="relative h-[480px] overflow-hidden xl:h-[520px]">
+        <div className="relative h-[400px] overflow-hidden xl:h-[440px]">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={active}
@@ -207,7 +211,7 @@ export function DashboardPreview() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 grid grid-cols-[220px_1fr] xl:grid-cols-[240px_1fr]"
+              className="absolute inset-0 grid grid-cols-[190px_1fr] xl:grid-cols-[210px_1fr]"
             >
               <ConversationList
                 scenario={scenario}

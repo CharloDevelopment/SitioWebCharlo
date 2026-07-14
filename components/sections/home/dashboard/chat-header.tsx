@@ -1,7 +1,6 @@
 "use client";
 
 import { Avatar } from "./avatar";
-import { Logo } from "@/components/shared/logo";
 import { WhatsAppIcon } from "./whatsapp-icon";
 import { fullName, initials, type Conversation } from "./scenarios";
 
@@ -41,10 +40,13 @@ export function ChatHeader({ conv }: ChatHeaderProps) {
           )}
         </p>
       </div>
-      <div className="bg-background/60 ml-auto flex shrink-0 items-center gap-1 rounded-md px-1.5 py-1">
-        <Logo variant="mark" width={12} height={12} className="!h-3 !w-3" />
-        <span className="text-foreground/70 text-[9px] font-semibold">Charló</span>
-      </div>
+      <img
+        src="/brand/logo-dashboard.png"
+        alt="Charló"
+        width={20}
+        height={20}
+        className="ml-auto h-5 w-5 shrink-0 object-contain"
+      />
     </div>
   );
 }
