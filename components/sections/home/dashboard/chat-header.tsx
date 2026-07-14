@@ -1,6 +1,5 @@
 "use client";
 
-import { Phone, Search, Video } from "lucide-react";
 import { Avatar } from "./avatar";
 import { WhatsAppIcon } from "./whatsapp-icon";
 import { fullName, initials, type Conversation } from "./scenarios";
@@ -40,29 +39,6 @@ export function ChatHeader({ conv }: ChatHeaderProps) {
             "Visto hace 2h"
           )}
         </p>
-      </div>
-      <div className="text-muted-foreground flex items-center gap-2.5">
-        <button
-          type="button"
-          aria-label="Videollamada"
-          className="hover:text-foreground transition-colors"
-        >
-          <Video className="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          aria-label="Llamada"
-          className="hover:text-foreground transition-colors"
-        >
-          <Phone className="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          aria-label="Buscar en el chat"
-          className="hover:text-foreground transition-colors"
-        >
-          <Search className="h-4 w-4" />
-        </button>
       </div>
     </div>
   );

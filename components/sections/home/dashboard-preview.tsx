@@ -17,12 +17,13 @@ import {
   type Tab,
 } from "./dashboard/scenarios";
 
-const ROTATION_INTERVAL = 9000;
+const ROTATION_INTERVAL = 14000;
 const RESUME_AFTER_INTERACTION = 5000;
 const STEP_TYPING = 1500;
-const STEP_MESSAGE = 2000;
-const STEP_DIVIDER = 1200;
-const STEP_END_PAUSE = 3000;
+const STEP_MESSAGE = 1800;
+const STEP_DIVIDER = 1000;
+const STEP_RICH_CARD = 3000;
+const STEP_END_PAUSE = 4000;
 
 const BUSINESS = { initials: "JM", name: "Tu negocio" };
 
@@ -127,6 +128,7 @@ export function DashboardPreview() {
     let delay: number;
     if ("type" in item && item.type === "divider") delay = STEP_DIVIDER;
     else if ("typing" in item && item.typing) delay = STEP_TYPING;
+    else if ("attachment" in item && item.attachment) delay = STEP_RICH_CARD;
     else delay = STEP_MESSAGE;
 
     stepTimerRef.current = window.setTimeout(() => {

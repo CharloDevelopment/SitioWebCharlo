@@ -17,8 +17,6 @@ const HERO_PHRASES = [
   "al alcance de todos.",
 ];
 
-const FEATURES = ["Configuración Incluida", "Precios Accesibles", "Cancela Cuando Quieras"];
-
 export function HeroSection() {
   const { setOpen: setDemoOpen } = useDemoModal();
   const reduced = useReducedMotion();
@@ -100,22 +98,6 @@ export function HeroSection() {
                 </Button>
               </MagneticButton>
             </motion.div>
-
-            <ol className="text-foreground/75 mt-10 flex flex-wrap items-baseline gap-x-4 gap-y-2 text-sm">
-              {FEATURES.map((label, i) => (
-                <li key={label} className="inline-flex items-baseline gap-2 whitespace-nowrap">
-                  <span className="text-primary/70 font-mono text-[11px] tracking-wider tabular-nums">
-                    0{i + 1}
-                  </span>
-                  <span className="font-medium">{label}</span>
-                  {i < FEATURES.length - 1 ? (
-                    <span aria-hidden="true" className="text-muted-foreground/30 ml-2 select-none">
-                      /
-                    </span>
-                  ) : null}
-                </li>
-              ))}
-            </ol>
           </div>
 
           <motion.div

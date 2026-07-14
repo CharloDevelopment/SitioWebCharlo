@@ -2,10 +2,7 @@ export type Tab = "atencion" | "cobranza" | "agenda";
 
 export type Conversation = {
   id: string;
-  name: {
-    given: string;
-    family: string;
-  };
+  name: { given: string; family: string };
   avatar: string;
   preview: string;
   time: string;
@@ -13,14 +10,61 @@ export type Conversation = {
   online?: boolean;
 };
 
+export type HighlightKind = "pagar" | "confirmar" | "reagendar" | "agendar";
+
 export type Message = {
   from: "client" | "charlo";
   text?: string;
   time: string;
   status?: "sent" | "delivered" | "read";
-  attachment?: "link" | "calendar" | "reminder";
+  attachment?:
+    | "link"
+    | "calendar"
+    | "reminder"
+    | "service-menu"
+    | "payment-methods"
+    | "receipt"
+    | "time-slots"
+    | "calendar-event"
+    | "quick-replies";
+  highlight?: HighlightKind;
+  data?: {
+    services?: ServiceItem[];
+    methods?: PaymentMethod[];
+    slots?: TimeSlot[];
+    replies?: QuickReply[];
+    amount?: string;
+    dueLabel?: string;
+    ref?: string;
+    eventDate?: string;
+    eventTime?: string;
+    eventLocation?: string;
+    eventDoctor?: string;
+  };
   typing?: boolean;
-  highlight?: "pagar" | "confirmar" | "reagendar";
+};
+
+export type ServiceItem = {
+  title: string;
+  duration: string;
+  price: string;
+};
+
+export type PaymentMethod = {
+  id: string;
+  label: string;
+  hint?: string;
+};
+
+export type TimeSlot = {
+  time: string;
+  available: boolean;
+};
+
+export type QuickReply = {
+  id: string;
+  label: string;
+  variant?: "primary" | "secondary";
 };
 
 export type DayDivider = { type: "divider"; label: string };
@@ -52,7 +96,7 @@ export const SCENARIOS: Record<Tab, Scenario> = {
         id: "maria",
         name: { given: "María", family: "González" },
         avatar: avatar("women", 44),
-        preview: "¿Tienen disponible el viernes?",
+        preview: "¿Qué servicios tienen?",
         time: "12:42",
         unread: 2,
         online: true,
@@ -98,36 +142,48 @@ export const SCENARIOS: Record<Tab, Scenario> = {
       { type: "divider", label: "Hoy" },
       {
         from: "client",
-        text: "Hola, ¿tienen disponibilidad para el viernes en la mañana?",
+        text: "Hola, ¿qué servicios tienen disponibles?",
         time: "12:38",
       },
       { from: "charlo", typing: true, time: "12:39" },
       {
         from: "charlo",
-        text: "Hola María. Tengo espacio a las 9:00 y a las 11:30. ¿Cuál te acomoda mejor?",
+        text: "¡Hola María! Estos son nuestros servicios:",
         time: "12:39",
         status: "read",
       },
-      { from: "charlo", typing: true, time: "12:40" },
+      {
+        from: "charlo",
+        time: "12:39",
+        status: "read",
+        attachment: "service-menu",
+        data: {
+          services: [
+            { title: "Consulta inicial", duration: "30 min", price: "$500" },
+            { title: "Seguimiento mensual", duration: "60 min", price: "$1,200" },
+            { title: "Asesoría express", duration: "15 min", price: "$300" },
+          ],
+        },
+      },
       {
         from: "client",
-        text: "A las 11:30 va perfecto",
-        time: "12:40",
+        text: "Me interesa la consultoría mensual",
+        time: "12:41",
       },
       { from: "charlo", typing: true, time: "12:41" },
       {
         from: "charlo",
-        text: "Listo. Te aparto el viernes 18 a las 11:30. Te mando un recordatorio el jueves.",
-        time: "12:41",
-        status: "read",
-        attachment: "calendar",
-        highlight: "confirmar",
-      },
-      { from: "charlo", typing: true, time: "12:42" },
-      {
-        from: "client",
-        text: "Sí, gracias",
+        text: "Perfecto. ¿Qué te gustaría hacer?",
         time: "12:42",
+        status: "read",
+        attachment: "quick-replies",
+        data: {
+          replies: [
+            { id: "info", label: "Más información", variant: "secondary" },
+            { id: "agendar", label: "Agendar llamada", variant: "primary" },
+            { id: "humano", label: "Hablar con humano", variant: "secondary" },
+          ],
+        },
       },
     ],
   },
@@ -187,42 +243,51 @@ export const SCENARIOS: Record<Tab, Scenario> = {
       { from: "charlo", typing: true, time: "10:01" },
       {
         from: "charlo",
-        text: "Hola Roberto. Te recuerdo que tu pago de $4,200 vence hoy.",
+        text: "Hola Roberto. Tienes un pago pendiente.",
         time: "10:02",
         status: "read",
+        attachment: "payment-methods",
+        data: {
+          amount: "$4,200 MXN",
+          dueLabel: "Vence hoy",
+          methods: [
+            { id: "tarjeta", label: "Tarjeta", hint: "Visa, MC, Amex" },
+            { id: "transfer", label: "Transferencia", hint: "SPEI" },
+            { id: "oxxo", label: "OXXO Pay", hint: "Efectivo" },
+          ],
+        },
       },
       {
         from: "client",
-        text: "Sí, mándamelo por favor",
+        text: "¿Aceptan OXXO?",
         time: "10:05",
       },
       { from: "charlo", typing: true, time: "10:05" },
       {
         from: "charlo",
-        text: "Listo. Puedes pagar con tarjeta o transferencia.",
+        text: "Sí. Te envío el link de pago:",
         time: "10:06",
         status: "read",
         attachment: "link",
         highlight: "pagar",
       },
       { type: "divider", label: "Más tarde" },
-      {
-        from: "charlo",
-        text: "Hola Roberto, ¿pudiste realizar el pago?",
-        time: "13:00",
-        status: "read",
-      },
       { from: "charlo", typing: true, time: "13:14" },
       {
         from: "client",
-        text: "Pago realizado. Gracias",
+        text: "Listo, ya pagué",
         time: "13:15",
       },
+      { from: "charlo", typing: true, time: "13:15" },
       {
         from: "charlo",
-        text: "Recibido. Tu saldo está al corriente. Gracias por tu preferencia.",
         time: "13:15",
         status: "read",
+        attachment: "receipt",
+        data: {
+          amount: "$4,200 MXN",
+          ref: "#CHL-8421",
+        },
       },
     ],
   },
@@ -282,26 +347,40 @@ export const SCENARIOS: Record<Tab, Scenario> = {
       { from: "charlo", typing: true, time: "13:59" },
       {
         from: "charlo",
-        text: "Hola Lucía. Tienes cita el viernes 18 a las 10:00 con el Dr. Hernández. ¿Confirmas?",
+        text: "Hola Lucía. Elige un horario para el viernes:",
         time: "14:00",
         status: "read",
-        attachment: "reminder",
+        attachment: "time-slots",
+        data: {
+          slots: [
+            { time: "9:00", available: true },
+            { time: "10:00", available: true },
+            { time: "11:30", available: false },
+            { time: "16:00", available: true },
+            { time: "17:30", available: true },
+            { time: "18:00", available: true },
+          ],
+        },
       },
-      { from: "charlo", typing: true, time: "14:21" },
       {
         from: "client",
-        text: "Confirmo cita del viernes 10am",
-        time: "14:22",
+        text: "A las 10:00 perfecto",
+        time: "14:21",
       },
+      { from: "charlo", typing: true, time: "14:22" },
       {
         from: "charlo",
-        text: "Perfecto. Te mando recordatorio 24 horas antes.",
         time: "14:22",
         status: "read",
-        attachment: "calendar",
+        attachment: "calendar-event",
         highlight: "reagendar",
+        data: {
+          eventDate: "Vie 18 Oct",
+          eventTime: "10:00",
+          eventDoctor: "Dr. Hernández",
+          eventLocation: "Sucursal Centro",
+        },
       },
-      { from: "charlo", typing: true, time: "14:23" },
     ],
   },
 };
