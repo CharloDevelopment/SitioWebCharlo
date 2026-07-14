@@ -349,7 +349,7 @@ export const TABS: { id: Tab; label: string }[] = [
   { id: "agenda", label: "Agenda" },
 ];
 
-export const FILTERS = ["Todos", "No leídos", "Clientes", "Pagos", "Citas"];
+export const FILTERS = ["Todos", "Bot", "Humano", "Pagos", "Citas"];
 
 export const fullName = (n: { given: string; family: string }) => `${n.given} ${n.family}`;
 
