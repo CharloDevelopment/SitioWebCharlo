@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BadgePercent, Settings, Sparkles, XCircle } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/shared/container";
 import { useDemoModal } from "@/components/forms/demo-modal";
 import { MagneticButton } from "@/components/motion/magnetic-button";
 import { RotatingText } from "@/components/motion/rotating-text";
+import { cn } from "@/lib/utils";
 import { DashboardPreview } from "./dashboard-preview";
 
 const HERO_PHRASES = [
@@ -17,10 +18,40 @@ const HERO_PHRASES = [
   "al alcance de todos.",
 ];
 
-const RIBBON = [
-  { label: "Configuración Incluida", delay: 0.55 },
-  { label: "Precios Accesibles", delay: 0.65 },
-  { label: "Cancela Cuando Quieras", delay: 0.75 },
+type Feature = {
+  icon: typeof Sparkles;
+  label: string;
+  iconClass: string;
+  pingClass: string;
+  ping: boolean;
+  delay: number;
+};
+
+const FEATURES: Feature[] = [
+  {
+    icon: Sparkles,
+    label: "Configuración Incluida",
+    iconClass: "text-primary",
+    pingClass: "bg-primary/40",
+    ping: true,
+    delay: 0.55,
+  },
+  {
+    icon: BadgePercent,
+    label: "Precios Accesibles",
+    iconClass: "text-emerald-600 dark:text-emerald-400",
+    pingClass: "bg-emerald-500/40",
+    ping: false,
+    delay: 0.65,
+  },
+  {
+    icon: XCircle,
+    label: "Cancela Cuando Quieras",
+    iconClass: "text-amber-600 dark:text-amber-400",
+    pingClass: "bg-amber-500/40",
+    ping: false,
+    delay: 0.75,
+  },
 ];
 
 export function HeroSection() {
@@ -105,23 +136,57 @@ export function HeroSection() {
               </MagneticButton>
             </motion.div>
 
-            <div className="mt-10 flex flex-wrap items-center gap-2">
-              {RIBBON.map((item) => (
-                <motion.span
-                  key={item.label}
-                  initial={{ opacity: 0, y: reduced ? 0 : 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: reduced ? 0 : 0.5,
-                    delay: reduced ? 0 : item.delay,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="border-border/60 bg-muted/50 text-foreground/80 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium"
-                >
-                  <Check className="text-primary h-3.5 w-3.5" strokeWidth={3} />
-                  {item.label}
-                </motion.span>
-              ))}
+            <div
+              className="border-border/60 from-muted/40 via-muted/15 to-muted/40 mt-10 inline-flex flex-wrap items-center gap-0.5 rounded-full border bg-gradient-to-r p-1 shadow-sm backdrop-blur-sm"
+              style={{
+                animation: reduced
+                  ? undefined
+                  : "fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both",
+              }}
+            >
+              {FEATURES.map((feature, i) => {
+                const Icon = feature.icon;
+                return (
+                  <motion.div
+                    key={feature.label}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: reduced ? 0 : 0.6,
+                      delay: reduced ? 0 : feature.delay,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className={cn(
+                      "group/chip relative inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 transition-colors",
+                      "hover:bg-background/80",
+                      i > 0 &&
+                        "before:bg-border/60 before:absolute before:-left-0.5 before:h-3 before:w-px before:content-[''] sm:before:block",
+                    )}
+                  >
+                    <span className="relative flex items-center justify-center">
+                      {feature.ping ? (
+                        <span
+                          className={cn(
+                            "absolute inset-0 -m-1 animate-ping rounded-full",
+                            feature.pingClass,
+                          )}
+                          aria-hidden="true"
+                        />
+                      ) : null}
+                      <Icon
+                        className={cn(
+                          "relative h-3.5 w-3.5 transition-transform group-hover/chip:scale-110",
+                          feature.iconClass,
+                        )}
+                        strokeWidth={2.25}
+                      />
+                    </span>
+                    <span className="text-foreground/80 text-xs font-medium whitespace-nowrap">
+                      {feature.label}
+                    </span>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
 

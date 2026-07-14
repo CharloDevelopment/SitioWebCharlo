@@ -123,4 +123,15 @@
       transform: translateX(calc(-100% - var(--gap, 2rem)));
     }
   }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
