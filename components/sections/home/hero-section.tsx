@@ -62,8 +62,9 @@ export function HeroSection() {
               }}
               className="text-muted-foreground mt-6 max-w-xl text-base text-balance sm:text-lg"
             >
-              Charló automatiza tu atención, cobranza y agenda. Recupera tiempo, deja de perseguir
-              clientes y haz crecer tu negocio mientras duermes.
+              Automatiza la comunicación con tus clientes. Responde mensajes, organiza citas y envía
+              recordatorios de pago desde WhatsApp, mientras tú te enfocas en hacer crecer tu
+              negocio.
             </motion.p>
 
             <motion.div
