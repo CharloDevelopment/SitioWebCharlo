@@ -155,10 +155,18 @@ export function DashboardPreview() {
     >
       <div
         aria-hidden="true"
-        className="from-primary/15 via-primary/5 absolute -inset-8 -z-10 rounded-3xl bg-gradient-to-br to-transparent blur-2xl"
+        className="absolute -inset-12 -z-10 rounded-[2.5rem] bg-[radial-gradient(ellipse_at_center,oklch(0.42_0.27_264_/_0.25),transparent_70%)] blur-2xl"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute -inset-6 -z-10 rounded-3xl bg-[conic-gradient(from_140deg_at_50%_50%,oklch(0.55_0.23_264_/_0.2),oklch(0.6_0.15_180_/_0.12),oklch(0.55_0.23_264_/_0.2))] opacity-60 blur-2xl"
+      />
+      <div
+        aria-hidden="true"
+        className="from-primary/20 via-primary/8 to-primary/15 absolute -inset-8 -z-10 rounded-3xl bg-gradient-to-br via-transparent blur-3xl"
       />
 
-      <div className="border-border/40 bg-card/90 shadow-primary/8 overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-sm">
+      <div className="border-border/40 bg-card/90 shadow-primary/10 ring-foreground/[0.02] overflow-hidden rounded-2xl border shadow-2xl ring-1 backdrop-blur-sm">
         <div className="border-border/40 bg-muted/30 flex items-center gap-1.5 border-b px-4 py-2.5">
           <div className="flex gap-1.5">
             <div className="h-2.5 w-2.5 rounded-full bg-red-400/70" />

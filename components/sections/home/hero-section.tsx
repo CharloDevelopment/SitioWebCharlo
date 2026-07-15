@@ -27,16 +27,28 @@ export function HeroSection() {
     <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28">
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,oklch(0.42_0.27_264_/_0.12),transparent_60%)]"
+        className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,oklch(0.42_0.27_264_/_0.18),transparent_70%)]"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,oklch(0.42_0.27_264_/_0.04)_1px,transparent_1px),linear-gradient(to_bottom,oklch(0.42_0.27_264_/_0.04)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_70%)] [background-size:64px_64px]"
+        className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_50%_40%_at_85%_30%,oklch(0.55_0.23_264_/_0.12),transparent_70%)]"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_50%_40%_at_15%_70%,oklch(0.6_0.15_180_/_0.08),transparent_70%)]"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-20 bg-[linear-gradient(to_right,oklch(0.42_0.27_264_/_0.06)_1px,transparent_1px),linear-gradient(to_bottom,oklch(0.42_0.27_264_/_0.06)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_25%,transparent_75%)] [background-size:56px_56px]"
+      />
+      <div
+        aria-hidden="true"
+        className="from-background absolute inset-x-0 bottom-0 -z-20 h-40 bg-gradient-to-t to-transparent"
       />
 
       <Container>
         <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-12 xl:grid-cols-[0.95fr_1.15fr] xl:gap-16">
-          <div className="flex flex-col items-start text-left">
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
             <motion.h1
               initial={{ opacity: 0, y: reduced ? 0 : 20 }}
               animate={{ opacity: 1, y: 0 }}
