@@ -27,23 +27,21 @@ export function HeroSection() {
     <section className="relative overflow-hidden pt-16 pb-20 sm:pt-24 sm:pb-28">
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,oklch(0.42_0.27_264_/_0.18),transparent_70%)]"
+        className="bg-primary/8 absolute -top-32 -left-24 -z-10 h-[520px] w-[520px] rounded-[60%_40%_55%_45%/55%_60%_40%_45%]"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_50%_40%_at_85%_30%,oklch(0.55_0.23_264_/_0.12),transparent_70%)]"
+        className="absolute -right-32 -bottom-40 -z-10 h-[480px] w-[480px] rounded-[45%_55%_40%_60%/50%_45%_55%_50%]"
+        style={{ backgroundColor: "oklch(0.72 0.15 180 / 0.07)" }}
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_50%_40%_at_15%_70%,oklch(0.6_0.15_180_/_0.08),transparent_70%)]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-20 bg-[linear-gradient(to_right,oklch(0.42_0.27_264_/_0.06)_1px,transparent_1px),linear-gradient(to_bottom,oklch(0.42_0.27_264_/_0.06)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_25%,transparent_75%)] [background-size:56px_56px]"
-      />
-      <div
-        aria-hidden="true"
-        className="from-background absolute inset-x-0 bottom-0 -z-20 h-40 bg-gradient-to-t to-transparent"
+        className="absolute inset-0 -z-10"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><circle cx='14' cy='14' r='1' fill='%230030F0' fill-opacity='0.14'/></svg>\")",
+          backgroundSize: "28px 28px",
+        }}
       />
 
       <Container>
