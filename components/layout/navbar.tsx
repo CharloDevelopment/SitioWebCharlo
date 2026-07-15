@@ -121,7 +121,7 @@ function NavItem({ item }: NavItemProps) {
         </button>
         <div
           className={cn(
-            "border-border bg-popover text-popover-foreground invisible absolute top-full left-0 z-50 mt-1 w-[480px] origin-top-left rounded-xl border p-2 opacity-0 shadow-xl transition-all",
+            "border-border bg-popover text-popover-foreground invisible absolute top-full left-0 z-50 mt-1 w-fit min-w-[320px] origin-top-left rounded-xl border p-2 opacity-0 shadow-xl transition-all",
             "group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100",
             "before:absolute before:-top-1 before:left-0 before:h-1 before:w-full before:content-['']",
           )}

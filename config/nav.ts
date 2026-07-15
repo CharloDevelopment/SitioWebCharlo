@@ -11,19 +11,19 @@ export const mainNav: NavItem[] = [
     href: "#",
     children: [
       {
-        title: "Charlo Atención",
+        title: "Charló Responde",
         href: "/atencion",
-        description: "Responde mensajes 24/7 sin perder clientes.",
+        description: "Automatiza la atención de tus clientes.",
       },
       {
-        title: "Charlo Cobranza",
-        href: "/cobranza",
-        description: "Cobra automáticamente sin perseguir a nadie.",
-      },
-      {
-        title: "Charlo Agenda",
+        title: "Charló Agenda",
         href: "/agenda",
-        description: "Gestiona citas sin esfuerzo.",
+        description: "Organiza citas y recordatorios automáticamente.",
+      },
+      {
+        title: "Charló Pagos",
+        href: "/cobranza",
+        description: "Envía recordatorios de pago por WhatsApp.",
       },
     ],
   },
