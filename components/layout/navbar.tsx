@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ChevronDown, Menu } from "lucide-react";
+import {
+  CalendarCheck,
+  ChevronDown,
+  HandCoins,
+  Menu,
+  MessagesSquare,
+  type LucideIcon,
+} from "lucide-react";
 import { Logo } from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +23,12 @@ import {
 import { cn } from "@/lib/utils";
 import { useDemoModal } from "@/components/forms/demo-modal";
 import { mainNav } from "@/config/nav";
+
+const DROPDOWN_ICONS: Record<string, LucideIcon> = {
+  "/atencion": MessagesSquare,
+  "/agenda": CalendarCheck,
+  "/cobranza": HandCoins,
+};
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -127,26 +140,34 @@ function NavItem({ item }: NavItemProps) {
           )}
         >
           <div className="grid gap-1">
-            {item.children.map((child) => (
-              <Link
-                key={child.href}
-                href={child.href}
-                className="group/submenu hover:bg-muted/50 focus-visible:bg-muted/50 focus-visible:ring-ring/40 relative flex flex-col gap-0.5 rounded-lg p-3 transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
-              >
-                <span
-                  aria-hidden="true"
-                  className="bg-primary absolute top-1/2 left-1 h-5 w-[2px] origin-top -translate-y-1/2 scale-y-0 rounded-full transition-transform duration-200 ease-out group-hover/submenu:scale-y-100 group-focus-visible/submenu:scale-y-100 motion-reduce:duration-0"
-                />
-                <span className="group-hover/submenu:text-primary group-focus-visible/submenu:text-primary text-sm font-medium transition-colors duration-150">
-                  {child.title}
-                </span>
-                {child.description ? (
-                  <span className="text-muted-foreground group-hover/submenu:text-foreground/70 group-focus-visible/submenu:text-foreground/70 text-xs leading-snug transition-colors duration-150">
-                    {child.description}
-                  </span>
-                ) : null}
-              </Link>
-            ))}
+            {item.children.map((child) => {
+              const Icon = DROPDOWN_ICONS[child.href] ?? MessagesSquare;
+              return (
+                <Link
+                  key={child.href}
+                  href={child.href}
+                  className="group/submenu hover:bg-muted/50 focus-visible:bg-muted/50 focus-visible:ring-ring/40 relative flex items-start gap-3 rounded-lg p-3 transition-colors duration-150 focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="bg-primary absolute top-1/2 left-1 h-5 w-[2px] origin-top -translate-y-1/2 scale-y-0 rounded-full transition-transform duration-200 ease-out group-hover/submenu:scale-y-100 group-focus-visible/submenu:scale-y-100 motion-reduce:duration-0"
+                  />
+                  <div className="bg-muted/70 text-foreground/70 group-hover/submenu:bg-primary/10 group-hover/submenu:text-primary group-focus-visible/submenu:bg-primary/10 group-focus-visible/submenu:text-primary flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors duration-150">
+                    <Icon className="h-5 w-5" strokeWidth={1.5} />
+                  </div>
+                  <div className="flex min-w-0 flex-1 flex-col gap-0.5 pt-0.5">
+                    <span className="group-hover/submenu:text-primary group-focus-visible/submenu:text-primary text-sm font-medium transition-colors duration-150">
+                      {child.title}
+                    </span>
+                    {child.description ? (
+                      <span className="text-muted-foreground group-hover/submenu:text-foreground/70 group-focus-visible/submenu:text-foreground/70 text-xs leading-snug transition-colors duration-150">
+                        {child.description}
+                      </span>
+                    ) : null}
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
