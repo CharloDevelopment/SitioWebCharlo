@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ChatView } from "./dashboard/chat-view";
 import { ConversationList } from "./dashboard/conversation-list";
+import { WhatsAppIcon } from "./dashboard/whatsapp-icon";
 import { SCENARIOS, TABS, type ChatItem, type Tab } from "./dashboard/scenarios";
 
 const ROTATION_INTERVAL = 14000;
@@ -165,13 +166,9 @@ export function DashboardPreview() {
             <div className="h-2.5 w-2.5 rounded-full bg-green-400/70" />
           </div>
           <div className="bg-background/60 ml-auto flex items-center gap-1.5 rounded-md px-2 py-1">
-            <img
-              src="/brand/logo-dashboard.png"
-              alt="Charló"
-              width={20}
-              height={20}
-              className="h-5 w-5 object-contain"
-            />
+            <div className="flex h-5 w-5 items-center justify-center rounded bg-[#25D366]">
+              <WhatsAppIcon className="h-3 w-3 text-white" />
+            </div>
             <div className="h-1.5 w-1.5 rounded-full bg-green-500" aria-hidden="true" />
           </div>
         </div>
